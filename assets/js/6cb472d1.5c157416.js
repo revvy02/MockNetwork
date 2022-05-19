@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[485],{97868:function(e){e.exports=JSON.parse('{"sourceUrl":"https://github.com/revvy02/MockNetwork/blob/master","baseUrl":"/MockNetwork/","classOrder":[],"apiCategories":[]}')}}]);
