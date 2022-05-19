@@ -1,0 +1,5 @@
+/build
+**/*.rbxlx
+**/*.rbxl
+**/*.rbxlx.lock
+**/*.rbxl.lock

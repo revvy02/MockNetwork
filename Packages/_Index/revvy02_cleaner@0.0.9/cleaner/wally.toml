@@ -1,0 +1,14 @@
+[package]
+name = "revvy02/cleaner"
+description = "Memory management class"
+version = "0.0.9"
+license = "MIT"
+authors = ["revvy"]
+realm = "shared"
+registry = "https://github.com/upliftgames/wally-index"
+
+exclude = ["**"]
+include = ["src", "src/**", "wally.toml", "default.project.json", "LICENSE"]
+
+[dependencies]
+TestEZ = "roblox/testez@0.4.1"
