@@ -7,7 +7,10 @@ local Slick = require(script.Parent.Parent.Slick)
 ]=]
 local RemoteFunctionClient = {}
 
-RemoteFunctionClient.__index = RemoteFunctionClient
+RemoteFunctionClient.__index = function(self, key)
+    return rawget(RemoteFunctionClient, key) or rawget(self, key) or self._internal[key]
+end
+
 
 RemoteFunctionClient.__newindex = function(self, key, fn)
     if key == "OnClientInvoke" then

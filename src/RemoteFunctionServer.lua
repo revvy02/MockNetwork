@@ -7,7 +7,9 @@ local Slick = require(script.Parent.Parent.Slick)
 ]=]
 local RemoteFunctionServer = {}
 
-RemoteFunctionServer.__index = RemoteFunctionServer
+RemoteFunctionServer.__index = function(self, key)
+    return rawget(RemoteFunctionServer, key) or rawget(self, key) or self._internal[key]
+end
 
 RemoteFunctionServer.__newindex = function(self, key, fn)
     if key == "OnServerInvoke" then

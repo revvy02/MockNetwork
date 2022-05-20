@@ -19,6 +19,36 @@ return function()
             mockRemoteFunction:destroy()
 
         end)
+
+        it("should have a readable OnClientInvoke property", function()
+            local mockRemoteFunction = MockRemoteFunction.new("user")
+
+            expect(mockRemoteFunction.OnClientInvoke).to.equal(nil)
+
+            local function onClientInvoke()
+                
+            end
+
+            mockRemoteFunction.OnClientInvoke = onClientInvoke
+            expect(mockRemoteFunction.OnClientInvoke).to.equal(onClientInvoke)
+
+            mockRemoteFunction:destroy()
+        end)
+
+        it("should have a readable OnServerInvoke property", function()
+            local mockRemoteFunction = MockRemoteFunction.new("user")
+
+            expect(mockRemoteFunction.OnServerInvoke).to.equal(nil)
+
+            local function onServerInvoke()
+                
+            end
+
+            mockRemoteFunction.OnServerInvoke = onServerInvoke
+            expect(mockRemoteFunction.OnServerInvoke).to.equal(onServerInvoke)
+
+            mockRemoteFunction:destroy()
+        end)
     end)
 
     describe("MockRemoteFunction.is", function()

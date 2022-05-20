@@ -7,11 +7,13 @@ local Slick = require(script.Parent.Parent.Slick)
 ]=]
 local MockRemoteFunction = {}
 
-MockRemoteFunction.__index = MockRemoteFunction
+MockRemoteFunction.__index = function(self, key)
+    return rawget(MockRemoteFunction, key) or rawget(self, key) or self._internal[key]
+end
 
 MockRemoteFunction.__newindex = function(self, key, fn)
     if key == "OnClientInvoke" then
-        self._callbacks.OnClientInvoke = fn
+        self._internal.OnClientInvoke = fn
         
         for _, signal in pairs(self._clientSignals) do
             signal:fire(fn(table.unpack(signal.args)))
@@ -20,7 +22,7 @@ MockRemoteFunction.__newindex = function(self, key, fn)
 
         table.clear(self._clientSignals)
     elseif key == "OnServerInvoke" then
-        self._callbacks.OnServerInvoke = fn
+        self._internal.OnServerInvoke = fn
 
         for _, signal in pairs(self._serverSignals) do
             signal:fire(fn(self._client, table.unpack(signal.args)))
@@ -56,7 +58,7 @@ function MockRemoteFunction.new(client)
     self.destroyed = false
     self._client = client
 
-    self._callbacks = {}
+    self._internal = {}
     self._clientSignals = {}
     self._serverSignals = {}
 
@@ -84,8 +86,8 @@ end
     @yields
 ]=]
 function MockRemoteFunction:invokeServer(...)
-    if self._callbacks.OnServerInvoke then
-        return self._callbacks.OnServerInvoke(self._client, ...)
+    if self._internal.OnServerInvoke then
+        return self._internal.OnServerInvoke(self._client, ...)
     end
 
     local signal = Slick.Signal.new()
@@ -108,8 +110,8 @@ end
 function MockRemoteFunction:invokeClient(client, ...)
     assert(client == self._client, "Invalid client passed")
 
-    if self._callbacks.OnClientInvoke then
-        return self._callbacks.OnClientInvoke(...)
+    if self._internal.OnClientInvoke then
+        return self._internal.OnClientInvoke(...)
     end
 
     local signal = Slick.Signal.new()
