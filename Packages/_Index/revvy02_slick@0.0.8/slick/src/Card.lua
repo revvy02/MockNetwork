@@ -168,7 +168,7 @@ end
 
     @return any
 ]=]
-function Card:get()
+function Card:getValue()
     return self._value
 end
 

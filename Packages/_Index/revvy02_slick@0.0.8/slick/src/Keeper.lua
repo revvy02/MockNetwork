@@ -22,9 +22,9 @@ function Keeper.new()
 
     self._cleaner = Cleaner.new()
 
-    self.added = self._cleaner:add(Signal.new())
-    self.removed = self._cleaner:add(Signal.new())
-    self.changed = self._cleaner:add(Signal.new())
+    self.created = self._cleaner:give(Signal.new())
+    self.removed = self._cleaner:give(Signal.new())
+    self.changed = self._cleaner:give(Signal.new())
 
     return self
 end
@@ -56,13 +56,13 @@ end
     @param value any
     @return Card
 ]=]
-function Keeper:addCard(key, value)
+function Keeper:createCard(key, value)
     assert(not self._cleaner:get(key), string.format("%s already exists as a card", tostring(key)))
 
     local card = self._cleaner:set(key, Card.new(value))
     card.key = key
 
-    self.added:fire(key, card)
+    self.created:fire(key, card)
 
     self._cleaner:set(card, card:getChangedSignal():connect(function(newValue, oldValue)
         self.changed:fire(card, newValue, oldValue)

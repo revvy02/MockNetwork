@@ -120,8 +120,8 @@ function Store.new(initial)
     self._reducedSignals = setmetatable({}, WEAK_MT)
     self._changedSignals = setmetatable({}, WEAK_MT)
 
-    self.changed = self._cleaner:add(Signal.new())
-    self.reduced = self._cleaner:add(Signal.new())
+    self.changed = self._cleaner:give(Signal.new())
+    self.reduced = self._cleaner:give(Signal.new())
     
     return self
 end
@@ -199,7 +199,7 @@ end
 
     @param key any
 ]=]
-function Store:get(key)
+function Store:getValue(key)
     return self._state[key]
 end
 

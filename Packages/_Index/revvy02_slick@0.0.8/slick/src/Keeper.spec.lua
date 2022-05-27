@@ -1,7 +1,8 @@
 local RunService = game:GetService("RunService")
-return function()
-    local Keeper = require(script.Parent.Keeper)
 
+local Keeper = require(script.Parent.Keeper)
+
+return function()
     describe("Keeper.new", function()
         it("should create a new keeper", function()
             local keeper = Keeper.new()
@@ -31,7 +32,7 @@ return function()
 
             expect(keeper:getCard("key")).to.equal(nil)
             
-            keeper:addCard("key")
+            keeper:createCard("key")
 
             expect(keeper:getCard("key")).to.be.ok()
 
@@ -39,14 +40,14 @@ return function()
         end)
     end)
 
-    describe("Keeper:addCard", function()
+    describe("Keeper:createCard", function()
         it("should throw if a card exists for that key", function()
             local keeper = Keeper.new()
 
-            keeper:addCard("key")
+            keeper:createCard("key")
 
             expect(function()
-                keeper:addCard("key")
+                keeper:createCard("key")
             end).to.throw()
 
             keeper:destroy()
@@ -55,7 +56,7 @@ return function()
         it("should return the card it creates", function()
             local keeper = Keeper.new()
 
-            local card = keeper:addCard("key")
+            local card = keeper:createCard("key")
 
             expect(card).to.equal(keeper:getCard("key"))
             expect(card).to.be.ok()
@@ -63,15 +64,15 @@ return function()
             keeper:destroy()
         end)
 
-        it("should fire the added signal with the card it creates", function()
+        it("should fire the created signal with the card it creates", function()
             local keeper = Keeper.new()
 
             task.spawn(function()
                 RunService.RenderStepped:Wait()
-                keeper:addCard("key")
+                keeper:createCard("key")
             end)
 
-            local key, addedCard = keeper.added:wait()
+            local key, addedCard = keeper.created:wait()
             
             expect(key).to.equal("key")
             expect(addedCard).to.be.ok()
@@ -94,7 +95,7 @@ return function()
 
         it("should return the card it removes", function()
             local keeper = Keeper.new()
-            local card = keeper:addCard("key")
+            local card = keeper:createCard("key")
 
             expect(card).to.be.ok()
             expect(keeper:removeCard("key")).to.equal(card)
@@ -104,7 +105,7 @@ return function()
 
         it("should fire the removed signal with the card it removes", function()
             local keeper = Keeper.new()
-            local card = keeper:addCard("key")
+            local card = keeper:createCard("key")
 
             task.spawn(function()
                 RunService.RenderStepped:Wait()
@@ -123,8 +124,8 @@ return function()
         it("should destroy all cards", function()
             local keeper = Keeper.new()
 
-            local keyCard = keeper:addCard("key")
-            local lockCard = keeper:addCard("lock")
+            local keyCard = keeper:createCard("key")
+            local lockCard = keeper:createCard("lock")
 
             keeper:destroy()
 

@@ -155,7 +155,7 @@ return function()
             local store = Store.new()
 
             store:dispatch("a", "setValue", 1)
-            expect(store:get("a")).to.equal(1)
+            expect(store:getValue("a")).to.equal(1)
 
             store:destroy()
         end)
@@ -180,7 +180,7 @@ return function()
 
             store:dispatch("a", "setValue", 2)
 
-            expect(store:get("a")).to.equal(2)
+            expect(store:getValue("a")).to.equal(2)
             expect(key).to.equal("a")
             expect(new.a).to.equal(2)
             expect(old.a).to.equal(1)
@@ -198,7 +198,7 @@ return function()
 
             store:dispatch("a", "setValue", 2)
 
-            expect(store:get("a")).to.equal(2)
+            expect(store:getValue("a")).to.equal(2)
             expect(key).to.equal("a")
             expect(reducer).to.equal("setValue")
             expect(value).to.equal(2)
@@ -232,7 +232,7 @@ return function()
             store:dispatch("a", "setIndex", "a", 1)
             expect(index).to.equal("a")
             expect(value).to.equal(1)
-            expect(store:get("a").a).to.equal(1)
+            expect(store:getValue("a").a).to.equal(1)
 
             store:destroy()
         end)
@@ -258,7 +258,7 @@ return function()
 
             store:rawset("a", 1)
 
-            expect(store:get("a")).to.equal(1)
+            expect(store:getValue("a")).to.equal(1)
             expect(done).to.equal(false)
 
             store:destroy()

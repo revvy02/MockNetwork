@@ -38,7 +38,7 @@ return function()
 
         it("should return false if passed object is not a cleaner", function()
             local cleaner = Cleaner.new()
-            local part = cleaner:add(Instance.new("Part"))
+            local part = cleaner:give(Instance.new("Part"))
             
             expect(cleaner.is(true)).to.equal(false)
             expect(cleaner.is(1000)).to.equal(false)
@@ -62,22 +62,22 @@ return function()
         end)
     end)
     
-    describe("Cleaner:add", function()
+    describe("Cleaner:give", function()
         it("should return the task added", function()
             local cleaner = Cleaner.new()
             local object = Object.new()
 
-            expect(cleaner:add(object)).to.equal(object)
+            expect(cleaner:give(object)).to.equal(object)
             
             cleaner:destroy()
         end)
 
         it("should fail if task is already added", function()
             local cleaner = Cleaner.new()
-            local object = cleaner:add(Object.new())
+            local object = cleaner:give(Object.new())
             
             expect(function()
-                cleaner:add(object)
+                cleaner:give(object)
             end).to.throw()
 
             cleaner:destroy()
@@ -87,10 +87,10 @@ return function()
             local cleaner = Cleaner.new()
 
             expect(function()
-                local part = cleaner:add(Instance.new("Part"))
+                local part = cleaner:give(Instance.new("Part"))
 
-                cleaner:add(part.ChildAdded:Connect(noop))
-                cleaner:add(noop)
+                cleaner:give(part.ChildAdded:Connect(noop))
+                cleaner:give(noop)
             end).to.never.throw()
             
             cleaner:destroy()
@@ -100,11 +100,11 @@ return function()
             local cleaner = Cleaner.new()
 
             expect(function()
-                cleaner:add(Object.new())
+                cleaner:give(Object.new())
             end).to.never.throw()
 
             expect(function()
-                cleaner:add({
+                cleaner:give({
                     Destroy = noop
                 })
             end).to.never.throw()
@@ -116,7 +116,7 @@ return function()
             local cleaner = Cleaner.new()
 
             expect(function()
-                cleaner:add(empty)
+                cleaner:give(empty)
             end).to.throw()
 
             cleaner:destroy()
@@ -126,7 +126,7 @@ return function()
             local cleaner = Cleaner.new()
             
             expect(function()
-                cleaner:add({
+                cleaner:give({
                     cleanup = noop,
                 }, "cleanup")
             end)
@@ -138,7 +138,7 @@ return function()
             local cleaner = Cleaner.new()
    
             expect(function()
-                cleaner:add(Object.new(noop), nil, 1, 2, 3)
+                cleaner:give(Object.new(noop), nil, 1, 2, 3)
             end).to.never.throw()
 
             cleaner:destroy()
@@ -148,7 +148,7 @@ return function()
             local cleaner = Cleaner.new()
             
             expect(function()
-                cleaner:add(empty)
+                cleaner:give(empty)
             end).to.throw()
 
             return cleaner
@@ -158,7 +158,7 @@ return function()
     describe("Cleaner:has", function()
         it("should return true if task is currently pending", function()
             local cleaner = Cleaner.new()
-            local task = cleaner:add(Object.new())
+            local task = cleaner:give(Object.new())
 
             expect(cleaner:has(task)).to.equal(true)
 
@@ -171,7 +171,7 @@ return function()
 
             expect(cleaner:has(task)).to.equal(false)
 
-            cleaner:add(task)
+            cleaner:give(task)
             cleaner:destroy()
         end)
     end)
@@ -339,7 +339,7 @@ return function()
             local count = 0
 
             for _ = 1, 10 do
-                cleaner:add(function()
+                cleaner:give(function()
                     count += 1
                 end)
             end
@@ -361,20 +361,20 @@ return function()
                 count += 1
             end
 
-            cleaner:add(function()
+            cleaner:give(function()
                 for _ = 1, 10 do
-                    cleaner:add({
+                    cleaner:give({
                         destroy = increment,
                     })
                 end
             end)
 
-            cleaner:add(function()
+            cleaner:give(function()
                 for _ = 1, 5 do
-                    cleaner:add({
+                    cleaner:give({
                         destroy = function()
                             for _ = 1, 5 do
-                                cleaner:add({
+                                cleaner:give({
                                     destroy = increment,
                                 })
                             end
@@ -394,7 +394,7 @@ return function()
             local cleaner = Cleaner.new()
             
             expect(function()
-                cleaner:add(function()
+                cleaner:give(function()
                     cleaner:work()
                 end)
 
@@ -412,7 +412,7 @@ return function()
             local count = 0
 
             for _ = 1, 10 do
-                cleaner:add(function()
+                cleaner:give(function()
                     count += 1
                 end)
             end

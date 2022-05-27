@@ -84,7 +84,7 @@ end
     @return boolean
 ]=]
 function Cleaner.is(obj)
-    return type(obj) == "table" and getmetatable(obj) == Cleaner or false
+    return type(obj) == "table" and getmetatable(obj) == Cleaner
 end
 
 --[=[
@@ -98,7 +98,7 @@ end
     @error "No finalizer found for %s (typeof: %s)"
     @error "Attempted to add duplicate %s (typeof: %s)"
 ]=]
-function Cleaner:add(task, finalizer, ...)
+function Cleaner:give(task, finalizer, ...)
     local taskString, taskTypeof = tostring(task), typeof(task)
     local taskMap = self[TaskMap]
 
@@ -142,7 +142,7 @@ function Cleaner:set(key, task, ...)
     end
 
     self[KeyMap][key] = task
-    self:add(task, ...)
+    self:give(task, ...)
 
     return task
 end

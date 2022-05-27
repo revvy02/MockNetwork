@@ -16,7 +16,7 @@ return function()
         it("should set the initial value if it's passed", function()
             local card = Card.new(0)
             
-            expect(card:get()).to.equal(0)
+            expect(card:getValue()).to.equal(0)
 
             card:destroy()
         end)
@@ -138,7 +138,7 @@ return function()
             local card = Card.new()
 
             card:dispatch("setValue", 1)
-            expect(card:get()).to.equal(1)
+            expect(card:getValue()).to.equal(1)
 
             card:destroy()
         end)
@@ -164,7 +164,7 @@ return function()
             card:rawset(2)
             card:dispatch("setValue", 3)
 
-            expect(card:get()).to.equal(3)
+            expect(card:getValue()).to.equal(3)
             expect(new).to.equal(3)
             expect(old).to.equal(2)
 
@@ -183,7 +183,7 @@ return function()
 
             expect(index).to.equal("a")
             expect(value).to.equal(1)
-            expect(card:get().a).to.equal(1)
+            expect(card:getValue().a).to.equal(1)
 
             card:destroy()
         end)
@@ -200,7 +200,7 @@ return function()
             end)
 
             card:rawset(2)
-            expect(card:get()).to.equal(2)
+            expect(card:getValue()).to.equal(2)
             expect(done).to.equal(false)
 
             card:destroy()
