@@ -5,22 +5,6 @@ return function()
     local RemoteEventClient = require(script.Parent.RemoteEventClient)
     local RemoteFunctionClient = require(script.Parent.RemoteFunctionClient)
 
-    describe("Client.is", function()
-        it("should return true if passed object is a Client", function()
-            local server = Server.new()
-            local client = server:connect("user")
-
-            expect(Client.is(client)).to.equal(true)
-        end)
-
-        it("should return false if passed object is not a Client", function()
-            expect(Client.is(true)).to.equal(false)
-            expect(Client.is(false)).to.equal(false)
-            expect(Client.is(0)).to.equal(false)
-            expect(Client.is({})).to.equal(false)
-        end)
-    end)
-
     describe("Client:getRemoteEvent", function()
         it("should return the client sided RemoteEvent if it exists", function()
             local server = Server.new()
@@ -28,17 +12,19 @@ return function()
 
             server:createRemoteEvent("remoteEvent")
 
-            expect(client:getRemoteEvent("remoteEvent")).to.be.ok()
-            expect(RemoteEventClient.is(client:getRemoteEvent("remoteEvent"))).to.equal(true)
+            expect(client:getRemoteEvent("remoteEvent")).to.be.a("table")
+            expect(getmetatable(client:getRemoteEvent("remoteEvent"))).to.equal(RemoteEventClient)
 
             server:destroy()
         end)
 
-        it("should return nil if it doesn't exist", function()
+        it("should throw if it doesn't exist", function()
             local server = Server.new()
             local client = server:connect("user")
 
-            expect(client:getRemoteEvent("remoteEvent")).to.equal(nil)
+            expect(function()
+                client:getRemoteEvent("remoteEvent")
+            end).to.throw()
 
             server:destroy()
         end)
@@ -51,17 +37,19 @@ return function()
 
             server:createRemoteFunction("remoteFunction")
             
-            expect(client:getRemoteFunction("remoteFunction")).to.be.ok()
-            expect(RemoteFunctionClient.is(client:getRemoteFunction("remoteFunction"))).to.equal(true)
+            expect(client:getRemoteFunction("remoteFunction")).to.be.a("table")
+            expect(getmetatable(client:getRemoteFunction("remoteFunction"))).to.equal(RemoteFunctionClient)
 
             server:destroy()
         end)
 
-        it("should return nil if it doesn't exist", function()
+        it("should throw if it doesn't exist", function()
             local server = Server.new()
             local client = server:connect("user")
 
-            expect(client:getRemoteFunction("remoteFunction")).to.equal(nil)
+            expect(function()
+                client:getRemoteFunction("remoteFunction")
+            end).to.throw()
 
             server:destroy()
         end)

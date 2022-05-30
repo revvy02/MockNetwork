@@ -43,16 +43,6 @@ function MockRemoteEvent.new(client)
 end
 
 --[=[
-    Returns whether the passed argument is a MockRemoteEvent
-
-    @param obj any
-    @return boolean
-]=]
-function MockRemoteEvent.is(obj)
-    return typeof(obj) == "table" and getmetatable(obj) == MockRemoteEvent
-end
-
---[=[
     Fires OnServerEvent with the client and passed arguments
 
     @param ... any

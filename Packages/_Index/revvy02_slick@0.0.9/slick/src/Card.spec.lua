@@ -1,14 +1,15 @@
 local RunService = game:GetService("RunService")
 
-return function()
-    local Card = require(script.Parent.Card)
+local Card = require(script.Parent.Card)
+local Signal = require(script.Parent.Signal)
 
+return function()
     describe("Card.new", function()
         it("should create a new card object", function()
             local card = Card.new()
 
-            expect(card).to.be.ok()
-            expect(card.is(card)).to.equal(true)
+            expect(card).to.be.a("table")
+            expect(getmetatable(card)).to.equal(Card)
 
             card:destroy()
         end)
@@ -20,30 +21,39 @@ return function()
 
             card:destroy()
         end)
-    end)
 
-    describe("Card.is", function()
-        it("should return true if the passed object is a card object", function()
-            local card = Card.new()
+        it("should use the reducers if passed instead of standard reducers", function()
+            local card = Card.new(1, {
+                increment = function(old, amount)
+                    return old + amount
+                end,
+            })
 
-            expect(card.is(card)).to.equal(true)
+            expect(function()
+                card:dispatch("setValue", 1)
+            end).to.throw()
+
+            expect(function()
+                card:dispatch("increment", 1)
+            end).to.never.throw()
+            
+            expect(card:getValue()).to.equal(2)
 
             card:destroy()
         end)
 
-        it("should return false if the passed object is not a card object", function()
-            local card = Card.new()
+        it("should use standard reducers if not passed", function()
+            local card = Card.new(2)
 
-            expect(card.is(0)).to.equal(false)
-            expect(card.is(true)).to.equal(false)
-            expect(card.is({})).to.equal(false)
+            expect(function()
+                card:dispatch("setValue", 1)
+            end).to.never.throw()
+
+            expect(card:getValue()).to.equal(1)
 
             card:destroy()
         end)
     end)
-
-
-
 
     describe("Card:setDepth", function()
         it("should set the depth of the card and trim any excess history off if necessary", function()
@@ -113,8 +123,8 @@ return function()
 
             local signal = card:getReducedSignal("setValue")
 
-            expect(signal).to.be.ok()
-            expect(signal.is(signal)).to.equal(true)
+            expect(signal).to.be.a("table")
+            expect(getmetatable(signal)).to.equal(Signal)
 
             card:destroy()
         end)
@@ -126,9 +136,9 @@ return function()
 
             local signal = card:getChangedSignal()
 
-            expect(signal).to.be.ok()
-            expect(signal.is(signal)).to.equal(true)
-
+            expect(signal).to.be.a("table")
+            expect(getmetatable(signal)).to.equal(Signal)
+            
             card:destroy()
         end)
     end)

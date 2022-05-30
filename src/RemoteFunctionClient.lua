@@ -89,16 +89,6 @@ function RemoteFunctionClient:_destroy()
 end
 
 --[=[
-    Returns whether the passed argument is a RemoteFunctionClient
-
-    @param obj any
-    @return boolean
-]=]
-function RemoteFunctionClient.is(obj)
-    return typeof(obj) == "table" and getmetatable(obj) == RemoteFunctionClient
-end
-
---[=[
     Sends a request to the server and yields until it receives a response
 
     @param ... any

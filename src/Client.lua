@@ -15,7 +15,7 @@ Client.__index = Client
     @param id string | number
     @param server Server
     @return Client
-    
+
     @private
 ]=]
 function Client._new(id, server)
@@ -62,22 +62,13 @@ function Client._new(id, server)
 end
 
 --[=[
-    Returns whether or not the passed argument is a Client or not
-
-    @param obj any
-    @return bool
-]=]
-function Client.is(obj)
-    return typeof(obj) == "table" and getmetatable(obj) == Client
-end
-
---[=[
     Gets the RemoteEventClient if it exists, returns nil otherwise
 
     @param name string
     @return RemoteEventClient | nil
 ]=]
 function Client:getRemoteEvent(name)
+    assert(self._remoteEvents[name], string.format("%s is not a valid RemoteEvent", name))
     return self._remoteEvents[name]
 end
 
@@ -88,6 +79,7 @@ end
     @return RemoteFunctionClient | nil
 ]=]
 function Client:getRemoteFunction(name)
+    assert(self._remoteFunctions[name], string.format("%s is not a valid RemoteFunction", name))
     return self._remoteFunctions[name]
 end
 

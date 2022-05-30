@@ -136,16 +136,6 @@ function Signal.new()
 end
 
 --[=[
-    Returns whether the passed argument is a signal
-
-    @param obj any
-    @return boolean
-]=]
-function Signal.is(obj)
-    return type(obj) == "table" and getmetatable(obj) == Signal
-end
-
---[=[
     Enables argumenting queuing from fire calls when there are no connections and sets queueing to true
 ]=]
 function Signal:enableQueueing()
@@ -290,7 +280,7 @@ end
     @return Connection
 ]=]
 function Signal:connect(fn)
-    local connection = Connection._new(self, fn)
+    local connection = Connection.new(self, fn)
     local head = self._head
 
     connection._next = head

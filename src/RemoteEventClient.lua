@@ -55,17 +55,6 @@ function RemoteEventClient:_destroy()
     self.OnClientEvent:destroy()
 end
 
-
---[=[
-    Returns whether the passed argument is a RemoteEventClient
-
-    @param obj any
-    @return boolean
-]=]
-function RemoteEventClient.is(obj)
-    return typeof(obj) == "table" and getmetatable(obj) == RemoteEventClient
-end
-
 --[=[
     Fires the corresponding RemoteEventServer instance's OnServerEvent signal with the passed args
 

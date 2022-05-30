@@ -6,23 +6,13 @@ return function()
 
     end
 
-    describe("Connection.is", function()
-        it("should return true if passed object is a Connection", function()
+    describe("Connection.new", function()
+        it("should create a new connection object", function()
             local signal = Signal.new()
-            local connection = signal:connect(noop)
+            local connection = Connection.new(signal, noop)
 
-            expect(connection.is(connection)).to.equal(true)
-            
-            signal:destroy()
-        end)
-
-        it("should return false if passed object is not a connection", function()
-            local signal = Signal.new()
-            local connection = signal:connect(noop)
-
-            expect(connection.is({})).to.equal(false)
-            expect(connection.is(noop)).to.equal(false)
-            expect(connection.is(true)).to.equal(false)
+            expect(connection).to.be.a("table")
+            expect(getmetatable(connection)).to.equal(Connection)
 
             signal:destroy()
         end)

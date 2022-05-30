@@ -11,8 +11,8 @@ return function()
         it("should return a new Server object", function()
             local server = Server.new()
 
-            expect(server).to.be.ok()
-            expect(server.is(server)).to.equal(true)
+            expect(server).to.be.a("table")
+            expect(getmetatable(server)).to.equal(Server)
 
             server:destroy()
         end)
@@ -25,25 +25,6 @@ return function()
 
             server:destroy()
         end)
-
-
-    end)
-
-    describe("Server.is", function()
-        it("should return true if the passed object is a Server object", function()
-            local server = Server.new()
-
-            expect(server.is(server)).to.equal(true)
-
-            server:destroy()
-        end)
-
-        it("should return false if the passed object is not a Server object", function()
-            expect(Server.is(true)).to.equal(false)
-            expect(Server.is(false)).to.equal(false)
-            expect(Server.is(0)).to.equal(false)
-            expect(Server.is({})).to.equal(false)
-        end)
     end)
 
     describe("Server:connect", function()
@@ -52,8 +33,8 @@ return function()
             
             local client = server:connect("user")
 
-            expect(client).to.be.ok()
-            expect(Client.is(client)).to.equal(true)
+            expect(client).to.be.a("table")
+            expect(getmetatable(client)).to.equal(Client)
             expect(client.id).to.equal("user")
 
             server:destroy()
@@ -67,8 +48,11 @@ return function()
 
             local client = server:connect("user")
 
-            expect(RemoteEventClient.is(client:getRemoteEvent("remoteEvent"))).to.equal(true)
-            expect(RemoteFunctionClient.is(client:getRemoteFunction("remoteFunction"))).to.equal(true)
+            expect(client:getRemoteEvent("remoteEvent")).to.be.a("table")
+            expect(getmetatable(client:getRemoteEvent("remoteEvent"))).to.equal(RemoteEventClient)
+
+            expect(client:getRemoteFunction("remoteFunction")).to.be.a("table")
+            expect(getmetatable(client:getRemoteFunction("remoteFunction"))).to.equal(RemoteFunctionClient)
 
             server:destroy()
         end)
@@ -172,10 +156,14 @@ return function()
 
             server:createRemoteEvent("remoteEvent")
 
-            expect(RemoteEventServer.is(server:getRemoteEvent("remoteEvent"))).to.equal(true)
+            expect(server:getRemoteEvent("remoteEvent")).to.be.a("table")
+            expect(getmetatable(server:getRemoteEvent("remoteEvent"))).to.equal(RemoteEventServer)
+            
+            expect(user0:getRemoteEvent("remoteEvent")).to.be.a("table")
+            expect(getmetatable(user0:getRemoteEvent("remoteEvent"))).to.equal(RemoteEventClient)
 
-            expect(RemoteEventClient.is(user0:getRemoteEvent("remoteEvent"))).to.equal(true)
-            expect(RemoteEventClient.is(user1:getRemoteEvent("remoteEvent"))).to.equal(true)
+            expect(user1:getRemoteEvent("remoteEvent")).to.be.a("table")
+            expect(getmetatable(user1:getRemoteEvent("remoteEvent"))).to.equal(RemoteEventClient)
 
             server:destroy()
         end)
@@ -212,10 +200,14 @@ return function()
 
             server:createRemoteFunction("remoteFunction")
 
-            expect(RemoteFunctionServer.is(server:getRemoteFunction("remoteFunction"))).to.equal(true)
+            expect(server:getRemoteFunction("remoteFunction")).to.be.a("table")
+            expect(getmetatable(server:getRemoteFunction("remoteFunction"))).to.equal(RemoteFunctionServer)
+            
+            expect(user0:getRemoteFunction("remoteFunction")).to.be.a("table")
+            expect(getmetatable(user0:getRemoteFunction("remoteFunction"))).to.equal(RemoteFunctionClient)
 
-            expect(RemoteFunctionClient.is(user0:getRemoteFunction("remoteFunction"))).to.equal(true)
-            expect(RemoteFunctionClient.is(user1:getRemoteFunction("remoteFunction"))).to.equal(true)
+            expect(user1:getRemoteFunction("remoteFunction")).to.be.a("table")
+            expect(getmetatable(user1:getRemoteFunction("remoteFunction"))).to.equal(RemoteFunctionClient)
 
             server:destroy()
         end)

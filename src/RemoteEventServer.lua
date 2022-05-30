@@ -58,16 +58,6 @@ function RemoteEventServer:destroy()
 end
 
 --[=[
-    Returns whether the passed argument is a RemoteEventServer
-
-    @param obj any
-    @return boolean
-]=]
-function RemoteEventServer.is(obj)
-    return typeof(obj) == "table" and getmetatable(obj) == RemoteEventServer
-end
-
---[=[
     Fires the corresponding RemoteEventClient instance's OnClientEvent signal with the passed arguments
 
     @param client Client

@@ -4,7 +4,7 @@ local Cleaner = require(script.Parent.Parent.Cleaner)
 
 local Signal = require(script.Parent.Signal)
 
-local Reducer = require(script.Parent.Reducer)
+local Reducers = require(script.Parent.Reducers)
 
 --[=[
     Store class that holds many values that can be changed by a set of reducers
@@ -106,7 +106,7 @@ end
     @param initial? table
     @return Store
 ]=]
-function Store.new(initial)
+function Store.new(initial, reducers)
     local self = setmetatable({}, Store)
 
     self._depth = 0
@@ -115,7 +115,7 @@ function Store.new(initial)
     self._state = initial or {}
 
     self._cleaner = Cleaner.new()
-    self._reducers = Reducer.Standard
+    self._reducers = reducers or Reducers.Standard
 
     self._reducedSignals = setmetatable({}, WEAK_MT)
     self._changedSignals = setmetatable({}, WEAK_MT)
@@ -124,16 +124,6 @@ function Store.new(initial)
     self.reduced = self._cleaner:give(Signal.new())
     
     return self
-end
-
---[=[
-    Returns whether or not the passed argument is a store object
-
-    @param obj any
-    @return bool
-]=]
-function Store.is(obj)
-    return type(obj) == "table" and getmetatable(obj) == Store
 end
 
 --[=[

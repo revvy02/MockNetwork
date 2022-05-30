@@ -2,26 +2,6 @@ return function()
     local Server = require(script.Parent.Server)
     local RemoteFunctionClient = require(script.Parent.RemoteFunctionClient)
 
-    describe("RemoteFunctionClient.is", function()
-        it("should return true if passed object is a RemoteFunctionClient", function()
-            local server = Server.new()
-            local client = server:connect("user")
-
-            server:createRemoteFunction("remoteFunction")
-
-            expect(RemoteFunctionClient.is(client:getRemoteFunction("remoteFunction"))).to.equal(true)
-
-            server:destroy()
-        end)
-
-        it("should return false if passed object is not a RemoteFunctionClient", function()
-            expect(RemoteFunctionClient.is(false)).to.equal(false)
-            expect(RemoteFunctionClient.is(true)).to.equal(false)
-            expect(RemoteFunctionClient.is(0)).to.equal(false)
-            expect(RemoteFunctionClient.is({})).to.equal(false)
-        end)
-    end)
-
     describe("RemoteFunctionClient:invokeServer", function()
        it("should return a response from the server if a handler exists", function()
             local server = Server.new()

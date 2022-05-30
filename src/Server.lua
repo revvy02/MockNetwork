@@ -42,16 +42,6 @@ function Server.new(ids)
 end
 
 --[=[
-    Returns whether or not the passed argument is a Server or not
-
-    @param obj any
-    @return bool
-]=]
-function Server.is(obj)
-    return typeof(obj) == "table" and getmetatable(obj) == Server
-end
-
---[=[
     Creates a new RemoteEvent on server and clients
 
     @param name string

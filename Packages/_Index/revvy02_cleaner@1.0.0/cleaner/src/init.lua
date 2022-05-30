@@ -3,15 +3,7 @@ local DUPLICATE_TASK_ERROR = "Attempted to add duplicate %s (typeof: %s)"
 local ALREADY_WORKING_ERROR = "Attempted to call work when already working"
 local INVALID_TASK_KEY_ERROR = "Key (%s) is not assigned to any task"
 
-local DEFAULT_FINALIZERS = {
-    ["function"] = function(trash)
-        trash()
-     end,
- 
-     ["Instance"] = game.Destroy,
- 
-     ["RBXScriptConnection"] = Instance.new("BindableEvent").Event:Connect(function() end).Disconnect,
-}
+local Finalizers = require(script.Finalizers)
 
 local function handleTask(task, finalizer, ...)
     if typeof(finalizer) == "string" then
@@ -28,7 +20,7 @@ local TaskMap = newproxy()
 --[=[
     Task that can be passed to a variety of methods that can be cleaned up
 
-    @type Task function | Instance | RbxScriptConnection | table
+    @type Task function | Instance | RbxScriptConnection | table | thread
     @within Cleaner
 ]=]
 
@@ -78,16 +70,6 @@ function Cleaner.new()
 end
 
 --[=[
-    Returns whether or not the passed argument is a cleaner
-
-    @param obj any
-    @return boolean
-]=]
-function Cleaner.is(obj)
-    return type(obj) == "table" and getmetatable(obj) == Cleaner
-end
-
---[=[
     Adds a task to the cleaner
 
     @param task Task
@@ -103,7 +85,7 @@ function Cleaner:give(task, finalizer, ...)
     local taskMap = self[TaskMap]
 
     if not finalizer then
-        finalizer = (taskTypeof == "table" and (task.destroy or task.Destroy)) or DEFAULT_FINALIZERS[taskTypeof]
+        finalizer = (taskTypeof == "table" and (task.destroy or task.Destroy)) or Finalizers[taskTypeof]
     end
 
     assert(finalizer, string.format(NO_FINALIZER_ERROR, taskString, taskTypeof))

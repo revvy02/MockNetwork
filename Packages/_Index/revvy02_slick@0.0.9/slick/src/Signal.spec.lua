@@ -1,21 +1,17 @@
+local RunService = game:GetService("RunService")
+
+local Promise = require(script.Parent.Parent.Promise)
+
+local Signal = require(script.Parent.Signal)
+local Connection = require(script.Parent.Signal.Connection)
+
 return function()
-    local RunService = game:GetService("RunService")
-
-    local Signal = require(script.Parent.Signal)
-    local Promise = require(script.Parent.Parent.Promise)
-
-    local empty = {}
-
-    local function noop()
-
-    end
-
     describe("Signal.new", function()
         it("should create a new signal object", function()
             local signal = Signal.new()
 
-            expect(signal).to.be.ok()
-            expect(signal.is(signal)).to.equal(true)
+            expect(signal).to.be.a("table")
+            expect(getmetatable(signal)).to.equal(Signal)
 
             signal:destroy()
         end)
@@ -32,27 +28,6 @@ return function()
             local signal = Signal.new()
 
             expect(signal.queueing).to.equal(false)
-
-            signal:destroy()
-        end)
-    end)
-
-    describe("Signal.is", function()
-        it("should return true if object is a Signal", function()
-            local signal = Signal.new()
-
-            expect(signal.is(signal)).to.equal(true)
-
-            signal:destroy()
-        end)
-
-        it("should return false if object is not a signal", function()
-            local signal = Signal.new()
-
-            expect(signal.is(empty)).to.equal(false)
-            expect(signal.is(true)).to.equal(false)
-            expect(signal.is(false)).to.equal(false)
-            expect(signal.is("string")).to.equal(false)
 
             signal:destroy()
         end)
@@ -443,16 +418,17 @@ return function()
     describe("Signal:connect", function()
         it("should return a connection object that uses the passed handler", function()
             local signal = Signal.new()
-            local connection = signal:connect(noop)
+            local connection = signal:connect(function() end)
             
-            expect(connection.is(connection)).to.equal(true)
+            expect(connection).to.be.a("table")
+            expect(getmetatable(connection)).to.equal(Connection)
 
             signal:destroy()
         end)
 
         it("should return a connection that is connected initially", function()
             local signal = Signal.new()
-            local connection = signal:connect(noop)
+            local connection = signal:connect(function() end)
 
             expect(connection.connected).to.equal(true)
 
@@ -469,13 +445,13 @@ return function()
 
             expect(value).to.equal(0)
             
-            signal:connect(noop):disconnect()
+            signal:connect(function() end):disconnect()
             expect(value).to.equal(1)
             
-            signal:connect(noop)
+            signal:connect(function() end)
             expect(value).to.equal(2)
 
-            signal:connect(noop)
+            signal:connect(function() end)
             expect(value).to.equal(2)
 
             signal:destroy()
@@ -539,8 +515,8 @@ return function()
     describe("Signal:disconnectAll", function()
         it("should disconnect all connected connections", function()
             local signal = Signal.new()
-            local connection0 = signal:connect(noop)
-            local connection1 = signal:connect(noop)
+            local connection0 = signal:connect(function() end)
+            local connection1 = signal:connect(function() end)
 
             expect(connection0.connected).to.equal(true)
             expect(connection1.connected).to.equal(true)
@@ -561,7 +537,7 @@ return function()
                 value += 1
             end)
 
-            signal:connect(noop)
+            signal:connect(function() end)
             expect(value).to.equal(0)
 
             signal:disconnectAll()
@@ -582,8 +558,8 @@ return function()
 
         it("should disconnect all connected connections", function()
             local signal = Signal.new()
-            local connection0 = signal:connect(noop)
-            local connection1 = signal:connect(noop)
+            local connection0 = signal:connect(function() end)
+            local connection1 = signal:connect(function() end)
 
             expect(connection0.connected).to.equal(true)
             expect(connection1.connected).to.equal(true)
@@ -602,7 +578,7 @@ return function()
                 value += 1
             end)
 
-            signal:connect(noop)
+            signal:connect(function() end)
             expect(value).to.equal(0)
 
             signal:destroy()

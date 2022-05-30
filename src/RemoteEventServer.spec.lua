@@ -2,24 +2,6 @@ return function()
     local Server = require(script.Parent.Server)
     local RemoteEventServer = require(script.Parent.RemoteEventServer)
 
-    describe("RemoteEventServer.is", function()
-        it("should return true if passed object is a RemoteEventServer", function()
-            local server = Server.new()
-            local remoteEvent = server:createRemoteEvent("remoteEvent")
-
-            expect(RemoteEventServer.is(remoteEvent)).to.equal(true)
-
-            server:destroy()
-        end)
-
-        it("should return false if passed object is not a RemoteEventServer", function()
-            expect(RemoteEventServer.is(false)).to.equal(false)
-            expect(RemoteEventServer.is(true)).to.equal(false)
-            expect(RemoteEventServer.is(0)).to.equal(false)
-            expect(RemoteEventServer.is({})).to.equal(false)
-        end)
-    end)
-
     describe("RemoteEventServer:fireClient", function()
         it("should fire the specified client remote event with the passed args", function()
             local server = Server.new()
@@ -127,8 +109,13 @@ return function()
 
             remoteEvent:destroy()
 
-            expect(user0:getRemoteEvent("remoteEvent")).to.equal(nil)
-            expect(user1:getRemoteEvent("remoteEvent")).to.equal(nil)
+            expect(function()
+                user0:getRemoteEvent("remoteEvent")
+            end).to.throw()
+            
+            expect(function()
+                user1:getRemoteEvent("remoteEvent")
+            end).to.throw()
 
             server:destroy()
         end)

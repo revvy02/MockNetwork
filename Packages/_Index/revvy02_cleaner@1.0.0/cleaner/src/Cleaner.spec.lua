@@ -27,36 +27,13 @@ return function()
         end
     end
 
-    describe("Cleaner.is", function()
-        it("should return true if passed object is a cleaner", function()
-            local cleaner = Cleaner.new()
-
-            expect(cleaner.is(cleaner)).to.equal(true)
-
-            cleaner:destroy()
-        end)
-
-        it("should return false if passed object is not a cleaner", function()
-            local cleaner = Cleaner.new()
-            local part = cleaner:give(Instance.new("Part"))
-            
-            expect(cleaner.is(true)).to.equal(false)
-            expect(cleaner.is(1000)).to.equal(false)
-            expect(cleaner.is(part)).to.equal(false)
-            expect(cleaner.is(noop)).to.equal(false)
-            expect(cleaner.is({})).to.equal(false)
-            expect(cleaner.is("test")).to.equal(false)
-
-            cleaner:destroy()
-        end)
-    end)
-
     describe("Cleaner.new", function()
         it("should create and return cleaner object", function()
             local cleaner = Cleaner.new()
 
             expect(cleaner).to.be.ok()
-            expect(cleaner.is(cleaner)).to.equal(true)
+            expect(cleaner).to.be.a("table")
+            expect(getmetatable(cleaner)).to.equal(Cleaner)
 
             cleaner:destroy()
         end)

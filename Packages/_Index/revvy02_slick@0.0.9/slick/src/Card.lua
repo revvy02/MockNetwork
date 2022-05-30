@@ -1,7 +1,7 @@
 local WEAK_MT = {__mode = "v"}
 
 local Signal = require(script.Parent.Signal)
-local Reducer = require(script.Parent.Reducer)
+local Reducers = require(script.Parent.Reducers)
 local None = require(script.Parent.None)
 
 local ChangedKey = newproxy()
@@ -75,7 +75,7 @@ end
     @param initial any
     @return Card
 ]=]
-function Card.new(initial)
+function Card.new(initial, reducers)
     local self = setmetatable({}, Card)
 
     self._value = initial
@@ -85,19 +85,9 @@ function Card.new(initial)
 
     self._signals = setmetatable({}, WEAK_MT)
     
-    self._reducers = Reducer.Standard
+    self._reducers = reducers or Reducers.Standard
 
     return self
-end
-
---[=[
-    Checks whether or not the passed arg is a card
-
-    @param obj any
-    @return bool
-]=]
-function Card.is(obj)
-    return type(obj) == "table" and getmetatable(obj) == Card
 end
 
 --[=[

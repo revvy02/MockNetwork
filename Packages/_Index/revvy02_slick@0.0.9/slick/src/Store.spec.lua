@@ -1,14 +1,15 @@
 local RunService = game:GetService("RunService")
 
-return function()
-    local Store = require(script.Parent.Store)
+local Signal = require(script.Parent.Signal)
+local Store = require(script.Parent.Store)
 
+return function()
     describe("Store.new", function()
         it("should create a new store object", function()
             local store = Store.new()
 
-            expect(store).to.be.ok()
-            expect(store.is(store)).to.equal(true)
+            expect(store).to.be.a("table")
+            expect(getmetatable(store)).to.equal(Store)
 
             store:destroy()
         end)
@@ -29,30 +30,43 @@ return function()
 
             store:destroy()
         end)
-    end)
 
-    describe("Store.is", function()
-        it("should return true if the passed object is a store object", function()
-            local store = Store.new()
+        it("should use the reducers passed instead of the standard reducers", function()
+            local store = Store.new({
+                key = 0
+            }, {
+                increment = function(old, amount)
+                    return old + amount
+                end,
+            })
 
-            expect(store.is(store)).to.equal(true)
+            expect(function()
+                store:dispatch("key", "setValue", 2)
+            end).to.throw()
+
+            expect(function()
+                store:dispatch("key", "increment", 3)
+            end).to.never.throw()
+
+            expect(store:getValue("key")).to.equal(3)
 
             store:destroy()
         end)
 
-        it("should return false if the passed object is not a store object", function()
-            local store = Store.new()
+        it("should use the standard reducers if none are passed", function()
+            local store = Store.new({
+                key = 0
+            })
 
-            expect(store.is(0)).to.equal(false)
-            expect(store.is(true)).to.equal(false)
-            expect(store.is({})).to.equal(false)
+            expect(function()
+                store:dispatch("key", "setValue", 2)
+            end).to.never.throw()
+
+            expect(store:getValue("key")).to.equal(2)
 
             store:destroy()
         end)
     end)
-
-
-
 
     describe("Store:setDepth", function()
         it("should set the depth of the store", function()
@@ -129,8 +143,8 @@ return function()
 
             local signal = store:getReducedSignal("a", "setValue")
 
-            expect(signal).to.be.ok()
-            expect(signal.is(signal)).to.equal(true)
+            expect(signal).to.be.a("table")
+            expect(getmetatable(signal)).to.equal(Signal)
 
             store:destroy()
         end)
@@ -143,8 +157,8 @@ return function()
 
             local signal = store:getChangedSignal("a")
 
-            expect(signal).to.be.ok()
-            expect(signal.is(signal)).to.equal(true)
+            expect(signal).to.be.a("table")
+            expect(getmetatable(signal)).to.equal(Signal)
 
             store:destroy()
         end)

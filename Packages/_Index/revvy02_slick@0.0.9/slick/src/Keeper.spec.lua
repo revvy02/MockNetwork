@@ -7,20 +7,8 @@ return function()
         it("should create a new keeper", function()
             local keeper = Keeper.new()
 
-            expect(keeper).to.be.ok()
-            expect(keeper.is(keeper)).to.equal(true)
-
-            keeper:destroy()
-        end)
-    end)
-
-    describe("Keeper.is", function()
-        it("should return whether or not the passed object is a keeper", function()
-            local keeper = Keeper.new()
-
-            expect(keeper.is(keeper)).to.equal(true)
-            expect(keeper.is(1)).to.equal(false)
-            expect(keeper.is({})).to.equal(false)
+            expect(keeper).to.be.a("table")
+            expect(getmetatable(keeper)).to.equal(Keeper)
 
             keeper:destroy()
         end)

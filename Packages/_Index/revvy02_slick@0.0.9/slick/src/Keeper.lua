@@ -30,16 +30,6 @@ function Keeper.new()
 end
 
 --[=[
-    Checks whether or not the passed argument is a Keeper instance or not
-
-    @param obj any
-    @return bool
-]=]
-function Keeper.is(obj)
-    return type(obj) == "table" and getmetatable(obj) == Keeper
-end
-
---[=[
     Gets the card from the key
 
     @param key any
@@ -56,10 +46,10 @@ end
     @param value any
     @return Card
 ]=]
-function Keeper:createCard(key, value)
+function Keeper:createCard(key, value, reducers)
     assert(not self._cleaner:get(key), string.format("%s already exists as a card", tostring(key)))
 
-    local card = self._cleaner:set(key, Card.new(value))
+    local card = self._cleaner:set(key, Card.new(value, reducers))
     card.key = key
 
     self.created:fire(key, card)

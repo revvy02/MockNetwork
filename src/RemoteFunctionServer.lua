@@ -91,16 +91,6 @@ function RemoteFunctionServer:destroy()
 end
 
 --[=[
-    Returns whether the passed argument is a RemoteFunctionServer
-
-    @param obj any
-    @return boolean
-]=]
-function RemoteFunctionServer.is(obj)
-    return typeof(obj) == "table" and getmetatable(obj) == RemoteFunctionServer
-end
-
---[=[
     Sends a request to the client and yields until it responds
 
     @param client Client

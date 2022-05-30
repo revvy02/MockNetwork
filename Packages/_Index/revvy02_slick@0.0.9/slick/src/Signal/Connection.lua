@@ -12,9 +12,8 @@ Connection.__index = Connection
     @param signal Signal
     @param fn function
     @return Connection
-    @private
 ]=]
-function Connection._new(signal, fn)
+function Connection.new(signal, fn)
 
     return setmetatable({
         _fn = fn,
@@ -29,16 +28,6 @@ function Connection._new(signal, fn)
         ]=]
         connected = true,
     }, Connection)
-end
-
---[=[
-    Returns whether or not the passed argument is a connection or not
-
-    @param obj any
-    @return bool
-]=]
-function Connection.is(obj)
-    return type(obj) == "table" and getmetatable(obj) == Connection
 end
 
 --[=[

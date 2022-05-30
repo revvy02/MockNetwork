@@ -1,5 +1,4 @@
-local reducers = {
-
+local Standard = {
     setValue = function(_, value)
         return value
     end,
@@ -44,7 +43,7 @@ local reducers = {
         end
 
         return old
-    end
+    end,
 }
 
-return reducers
+return Standard

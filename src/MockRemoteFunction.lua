@@ -68,16 +68,6 @@ function MockRemoteFunction.new(client)
 end
 
 --[=[
-    Returns whether the passed argument is a MockRemoteFunction
-
-    @param obj any
-    @return boolean
-]=]
-function MockRemoteFunction.is(obj)
-    return typeof(obj) == "table" and getmetatable(obj) == MockRemoteFunction
-end
-
---[=[
     Sends a request to the server and yields until a response is received
 
     @param ... any

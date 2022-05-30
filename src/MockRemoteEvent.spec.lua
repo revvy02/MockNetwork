@@ -5,8 +5,8 @@ return function()
         it("should create a new MockRemoteEvent", function()
             local mockRemoteEvent = MockRemoteEvent.new()
 
-            expect(mockRemoteEvent).to.be.ok()
-            expect(mockRemoteEvent.is(mockRemoteEvent)).to.equal(true)
+            expect(mockRemoteEvent).to.be.a("table")
+            expect(getmetatable(mockRemoteEvent)).to.equal(MockRemoteEvent)
 
             mockRemoteEvent:destroy()
         end)
@@ -17,23 +17,6 @@ return function()
             expect(mockRemoteEvent:getClient()).to.equal("user")
 
             mockRemoteEvent:destroy()
-        end)
-    end)
-
-    describe("MockRemoteEvent.is", function()
-        it("should return true if the passed object is a MockRemoteEvent", function()
-            local mockRemoteEvent = MockRemoteEvent.new()
-
-            expect(mockRemoteEvent.is(mockRemoteEvent)).to.equal(true)
-
-            mockRemoteEvent:destroy()
-        end)
-
-        it("should return false if the passed object is not a MockRemoteEvent", function()
-            expect(MockRemoteEvent.is(0)).to.equal(false)
-            expect(MockRemoteEvent.is(false)).to.equal(false)
-            expect(MockRemoteEvent.is(true)).to.equal(false)
-            expect(MockRemoteEvent.is({})).to.equal(false)
         end)
     end)
 
