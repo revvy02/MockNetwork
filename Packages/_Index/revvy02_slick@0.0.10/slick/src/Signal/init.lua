@@ -319,6 +319,7 @@ end
     Alias for disconnectAll but sets destroyed field to true
 ]=]
 function Signal:destroy()
+    self:flush()
     self:disconnectAll()
     self.destroyed = true
 end

@@ -14,12 +14,12 @@ dependencies = [["TestEZ", "roblox/testez@0.4.1"]]
 
 [[package]]
 name = "revvy02/mocknetwork"
-version = "1.0.0"
-dependencies = [["Slick", "revvy02/slick@0.0.9"], ["TestEZ", "roblox/testez@0.4.1"]]
+version = "1.0.1"
+dependencies = [["Slick", "revvy02/slick@0.0.10"], ["TestEZ", "roblox/testez@0.4.1"]]
 
 [[package]]
 name = "revvy02/slick"
-version = "0.0.9"
+version = "0.0.10"
 dependencies = [["Cleaner", "revvy02/cleaner@1.0.0"], ["Promise", "evaera/promise@4.0.0"], ["TestEZ", "roblox/testez@0.4.1"]]
 
 [[package]]

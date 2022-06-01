@@ -73,8 +73,6 @@ end
 
 --[=[
     Called by Server to clean up
-    
-    @private
 ]=]
 function RemoteFunctionServer:destroy()
     self._server._remoteFunctions[self.name] = nil
