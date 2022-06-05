@@ -11,7 +11,7 @@ MockRemoteEvent.__index = MockRemoteEvent
 --[=[
     Constructs a new MockRemoteEvent object.
 
-    @param client any
+    @param client string
     @return MockRemoteEvent
 ]=]
 function MockRemoteEvent.new(client)
@@ -54,7 +54,7 @@ end
 --[=[
     Fires OnClientEvent with the passed arguments
 
-    @param client any
+    @param client string
     @param ... any
 ]=]
 function MockRemoteEvent:fireClient(client, ...)
@@ -91,8 +91,43 @@ function MockRemoteEvent:destroy()
     self.destroyed = true
 end
 
+--[=[
+    PascalCase alias for fireServer
+
+    @param ... any
+
+    @method FireServer
+    @within MockRemoteEvent
+]=]
 MockRemoteEvent.FireServer = MockRemoteEvent.fireServer
+
+--[=[
+    PascalCase alias for fireClient
+
+    @param client string
+    @param ... any
+
+    @method FireClient
+    @within MockRemoteEvent
+]=]
 MockRemoteEvent.FireClient = MockRemoteEvent.fireClient
+
+--[=[
+    PascalCase alias for fireAllClients
+
+    @param ... any
+
+    @method FireAllClients
+    @within MockRemoteEvent
+]=]
+MockRemoteEvent.FireAllClients = MockRemoteEvent.fireAllClients
+
+--[=[
+    PascalCase alias for destroy
+
+    @method Destroy
+    @within MockRemoteEvent
+]=]
 MockRemoteEvent.Destroy = MockRemoteEvent.destroy
 
 return MockRemoteEvent

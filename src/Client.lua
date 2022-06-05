@@ -12,7 +12,7 @@ Client.__index = Client
 --[=[
     Constructs a new Client object
 
-    @param id string | number
+    @param id string
     @param server Server
     @return Client
 
@@ -28,7 +28,7 @@ function Client._new(id, server)
     --[=[
         Stores the id of the client passed in the constructor
 
-        @prop id string | number
+        @prop id string
         @within Client
         @readonly
     ]=]
@@ -65,7 +65,9 @@ end
     Gets the RemoteEventClient if it exists, returns nil otherwise
 
     @param name string
-    @return RemoteEventClient | nil
+    @return RemoteEventClient
+
+    @error "%s is not a valid RemoteEvent"
 ]=]
 function Client:getRemoteEvent(name)
     assert(self._remoteEvents[name], string.format("%s is not a valid RemoteEvent", name))
@@ -76,7 +78,9 @@ end
     Gets the RemoteFunctionClient if it exists, returns nil otherwise
 
     @param name string
-    @return RemoteFunctionClient | nil
+    @return RemoteFunctionClient
+
+    @error "%s is not a valid RemoteFunction"
 ]=]
 function Client:getRemoteFunction(name)
     assert(self._remoteFunctions[name], string.format("%s is not a valid RemoteFunction", name))

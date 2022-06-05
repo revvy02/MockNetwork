@@ -98,7 +98,7 @@ end
 --[=[
     Connects a new client to the server
 
-    @param id string | number
+    @param id string
     @return Client
 ]=]
 function Server:connect(id)
@@ -108,7 +108,7 @@ end
 --[=[
     Disconnects client from server
 
-    @param id string | number
+    @param id string
 ]=]
 function Server:disconnect(id)
     self:getClient(id):disconnect()
@@ -117,7 +117,7 @@ end
 --[=[
     Gets the client object from id
 
-    @param id string | number
+    @param id string
     @return Client
 ]=]
 function Server:getClient(id)

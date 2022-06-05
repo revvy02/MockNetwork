@@ -98,8 +98,17 @@ function RemoteFunctionClient:invokeServer(...)
     return self._server:getRemoteFunction(self.name):_invokeServer(self._client, ...)
 end
 
+--[=[
+    PascalCase alias for invokeServer
 
+    @param ... any
+    @return any
+
+    @yields
+
+    @method InvokeServer
+    @within RemoteFunctionClient
+]=]
 RemoteFunctionClient.InvokeServer = RemoteFunctionClient.invokeServer
-RemoteFunctionClient.Destroy = RemoteFunctionClient.destroy
 
 return RemoteFunctionClient

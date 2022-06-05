@@ -36,7 +36,7 @@ end
 --[=[
     Constructs a new MockRemoteFunction object.
 
-    @param client any
+    @param client string
     @return MockRemoteEvent
 ]=]
 function MockRemoteFunction.new(client)
@@ -91,7 +91,7 @@ end
 --[=[
     Sends a request to the client and yields until a response is received
 
-    @param client any
+    @param client string
     @param ... any
     @return any
 
@@ -136,8 +136,39 @@ function MockRemoteFunction:destroy()
     self.destroyed = true
 end
 
-MockRemoteFunction.Destroy = MockRemoteFunction.destroy
+--[=[
+    PascalCase alias for invokeServer
+
+    @param ... any
+    @return any
+
+    @yields
+
+    @method InvokeServer
+    @within MockRemoteFunction
+]=]
 MockRemoteFunction.InvokeServer = MockRemoteFunction.invokeServer
+
+--[=[
+    PascalCase alias for invokeClient
+
+    @param client string
+    @param ... any
+    @return any
+
+    @yields
+
+    @method InvokeClient
+    @within MockRemoteFunction
+]=]
 MockRemoteFunction.InvokeClient = MockRemoteFunction.invokeClient
+
+--[=[
+    PascalCase alias for destroy
+
+    @method Destroy
+    @within MockRemoteFunction
+]=]
+MockRemoteFunction.Destroy = MockRemoteFunction.destroy
 
 return MockRemoteFunction

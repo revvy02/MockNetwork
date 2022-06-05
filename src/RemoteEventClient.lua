@@ -64,7 +64,14 @@ function RemoteEventClient:fireServer(...)
     self._server:getRemoteEvent(self.name):_fireServer(self._client, ...)
 end
 
+--[=[
+    PascalCase alias for fireServer
+
+    @param ... any
+
+    @method FireServer
+    @within RemoteEventClient
+]=]
 RemoteEventClient.FireServer = RemoteEventClient.fireServer
-RemoteEventClient.Destroy = RemoteEventClient.destroy
 
 return RemoteEventClient

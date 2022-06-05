@@ -78,8 +78,33 @@ function RemoteEventServer:fireAllClients(...)
     end
 end
 
+--[=[
+    PascalCase alias for fireServer
+
+    @param client Client
+    @param ... any
+
+    @method FireClient
+    @within RemoteEventServer
+]=]
 RemoteEventServer.FireClient = RemoteEventServer.fireClient
+
+--[=[
+    PascalCase alias for fireAllClients
+
+    @param ... any
+
+    @method FireAllClients
+    @within RemoteEventServer
+]=]
 RemoteEventServer.FireAllClients = RemoteEventServer.fireAllClients
+
+--[=[
+    PascalCase alias for destroy
+
+    @method Destroy
+    @within RemoteEventServer
+]=]
 RemoteEventServer.Destroy = RemoteEventServer.destroy
 
 return RemoteEventServer
