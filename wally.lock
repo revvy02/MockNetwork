@@ -14,7 +14,7 @@ dependencies = [["TestEZ", "roblox/testez@0.4.1"]]
 
 [[package]]
 name = "revvy02/mocknetwork"
-version = "1.0.2"
+version = "1.0.3"
 dependencies = [["Slick", "revvy02/slick@0.0.10"], ["TestEZ", "roblox/testez@0.4.1"]]
 
 [[package]]
