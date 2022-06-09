@@ -32,13 +32,15 @@ function Server.new(ids)
     self.clientConnected = Slick.Signal.new()
     self.clientDisconnecting = Slick.Signal.new()
 
+    local clients = {}
+
     if ids then
         for _, id in pairs(ids) do
-            self:connect(id)
+            table.insert(clients, self:connect(id))
         end
     end
 
-    return self
+    return self, table.unpack(clients)
 end
 
 --[=[
