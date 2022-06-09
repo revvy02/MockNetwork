@@ -17,8 +17,8 @@ return function()
             server:destroy()
         end)
 
-        it("should create clients from passed id list if it's passed", function()
-            local server = Server.new({"user0", "user1"})
+        it("should create clients from passed ids if any are passed", function()
+            local server = Server.new("user0", "user1")
 
             expect(server:getClient("user0")).to.be.ok()
             expect(server:getClient("user1")).to.be.ok()
@@ -26,8 +26,8 @@ return function()
             server:destroy()
         end)
 
-        it("should return the new Server object and each client if id list is passed", function()
-            local server, user0, user1, user2 = Server.new({"user0", "user1", "user2"})
+        it("should return the new Server object and each new client if ids are passed", function()
+            local server, user0, user1, user2 = Server.new("user0", "user1", "user2")
 
             expect(user0).to.be.ok()
             expect(user1).to.be.ok()

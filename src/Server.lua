@@ -22,7 +22,7 @@ Server.__index = Server
     @param ids table
     @return Server
 ]=]
-function Server.new(ids)
+function Server.new(...)
     local self = setmetatable({}, Server)
 
     self._clients = {}
@@ -34,8 +34,8 @@ function Server.new(ids)
 
     local clients = {}
 
-    if ids then
-        for _, id in pairs(ids) do
+    if select("#", ...) > 0 then
+        for _, id in pairs({...}) do
             table.insert(clients, self:connect(id))
         end
     end
