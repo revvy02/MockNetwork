@@ -1,4 +1,4 @@
-local Slick = require(script.Parent.Parent.Slick)
+local TrueSignal = require(script.Parent.Parent.TrueSignal)
 
 --[=[
     RemoteEventServer class
@@ -23,8 +23,7 @@ function RemoteEventServer._new(name, server)
     self.name = name
     self._server = server
 
-    self.OnServerEvent = Slick.Signal.new()
-    self.OnServerEvent:enableQueueing()
+    self.OnServerEvent = TrueSignal.new(false, true)
     
     self._server._remoteEvents[name] = self
 

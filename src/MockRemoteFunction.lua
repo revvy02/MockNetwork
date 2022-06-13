@@ -1,4 +1,4 @@
-local Slick = require(script.Parent.Parent.Slick)
+local TrueSignal = require(script.Parent.Parent.TrueSignal)
 
 --[=[
     MockRemoteFunction class
@@ -80,7 +80,7 @@ function MockRemoteFunction:invokeServer(...)
         return self._internal.OnServerInvoke(self._client, ...)
     end
 
-    local signal = Slick.Signal.new()
+    local signal = TrueSignal.new()
     signal.args = table.pack(...)
 
     table.insert(self._serverSignals, signal)
@@ -104,7 +104,7 @@ function MockRemoteFunction:invokeClient(client, ...)
         return self._internal.OnClientInvoke(...)
     end
 
-    local signal = Slick.Signal.new()
+    local signal = TrueSignal.new()
     signal.args = table.pack(...)
 
     table.insert(self._clientSignals, signal)

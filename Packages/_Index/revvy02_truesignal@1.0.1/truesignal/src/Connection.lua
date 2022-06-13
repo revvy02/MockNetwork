@@ -12,8 +12,10 @@ Connection.__index = Connection
     @param signal Signal
     @param fn function
     @return Connection
+
+    @private
 ]=]
-function Connection.new(signal, fn)
+function Connection._new(signal, fn)
 
     return setmetatable({
         _fn = fn,
@@ -48,10 +50,7 @@ function Connection:disconnect()
     end
 
     if node == self then
-        if not signal.firing then
-            signal._head = self._next
-            signal:_tryDeactivatedCall()
-        end
+        signal._head = self._next
     else
         while node and node._next ~= self do
             node = node._next

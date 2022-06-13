@@ -1,4 +1,4 @@
-local Slick = require(script.Parent.Parent.Slick)
+local TrueSignal = require(script.Parent.Parent.TrueSignal)
 
 local Client = require(script.Parent.Client)
 
@@ -19,7 +19,7 @@ Server.__index = Server
 --[=[
     Constructs a new Server object
 
-    @param ids table
+    @param ... string
     @return Server
 ]=]
 function Server.new(...)
@@ -29,8 +29,8 @@ function Server.new(...)
     self._remoteEvents = {}
     self._remoteFunctions = {}
 
-    self.clientConnected = Slick.Signal.new()
-    self.clientDisconnecting = Slick.Signal.new()
+    self.clientConnected = TrueSignal.new()
+    self.clientDisconnecting = TrueSignal.new()
 
     local clients = {}
 
@@ -130,8 +130,6 @@ end
     Prepares server for garbage collection
 ]=]
 function Server:destroy()
-    self.destroyed = true
-
     for _, remoteEvent in pairs(self._remoteEvents) do
         remoteEvent:destroy()
     end
@@ -146,6 +144,8 @@ function Server:destroy()
 
     self.clientConnected:destroy()
     self.clientDisconnecting:destroy()
+
+    self.destroyed = true
 end
 
 return Server

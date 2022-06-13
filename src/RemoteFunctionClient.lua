@@ -1,4 +1,4 @@
-local Slick = require(script.Parent.Parent.Slick)
+local TrueSignal = require(script.Parent.Parent.TrueSignal)
 
 --[=[
     RemoteFunctionClient class
@@ -65,7 +65,7 @@ function RemoteFunctionClient:_invokeClient(...)
         return self._internal.OnClientInvoke(...)
     end
 
-    local signal = Slick.Signal.new()
+    local signal = TrueSignal.new()
     signal.args = table.pack(...)
 
     table.insert(self._signals, signal)

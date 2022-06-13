@@ -1,4 +1,4 @@
-local Slick = require(script.Parent.Parent.Slick)
+local TrueSignal = require(script.Parent.Parent.TrueSignal)
 
 --[=[
     MockRemoteEvent class
@@ -26,8 +26,7 @@ function MockRemoteEvent.new(client)
         @within MockRemoteEvent
         @readonly
     ]=]
-    self.OnClientEvent = Slick.Signal.new()
-    self.OnClientEvent:enableQueueing()
+    self.OnClientEvent = TrueSignal.new(false, true)
     
     --[=[
         Signal property to listen to received data on server
@@ -36,8 +35,7 @@ function MockRemoteEvent.new(client)
         @within MockRemoteEvent
         @readonly
     ]=]
-    self.OnServerEvent = Slick.Signal.new()
-    self.OnServerEvent:enableQueueing()
+    self.OnServerEvent = TrueSignal.new(false, true)
 
     return self
 end
