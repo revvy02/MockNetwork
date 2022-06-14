@@ -45,10 +45,6 @@ function Connection:disconnect()
     local signal = self._signal
     local node = signal._head
 
-    if signal.firing then
-        return
-    end
-
     if node == self then
         signal._head = self._next
     else

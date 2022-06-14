@@ -35,16 +35,6 @@ TrueSignal.__index = TrueSignal
 function TrueSignal.new(deferred, queueing)
     local self = setmetatable({}, TrueSignal)
 
-    --[=[
-        Tells whether or not the TrueSignal is currently firing arguments or not
-        (this can only be true if the environment it is being read from is within a handler call)
-
-        @prop firing bool
-        @within TrueSignal
-        @readonly
-    ]=]
-    self.firing = false
-
     if deferred then
         self._deferred = true
     end
@@ -69,28 +59,7 @@ function TrueSignal:fire(...)
             table.insert(self._queue, table.pack(...))
         end
     else
-        self.firing = true
-
         eachNode(head, self._deferred and fireDeferredConnection or fireImmediateConnection, ...)
-
-        local newHead, newTail
-
-        eachNode(head, function(node)
-            if node.connected then
-                if not newHead then
-                    newHead = node
-                    newTail = node
-
-                    newTail._next = nil
-                else
-                    newTail._next = node
-                    newTail = node
-                end
-            end
-        end)
-        
-        self._head = newHead
-        self.firing = false
     end
 end
 
@@ -105,6 +74,7 @@ function TrueSignal:connect(fn)
     local head = self._head
 
     connection._next = head
+
     self._head = connection
     
     if not head and self._queue then

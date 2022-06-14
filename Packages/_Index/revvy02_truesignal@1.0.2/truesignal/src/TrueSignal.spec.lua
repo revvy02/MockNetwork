@@ -42,7 +42,7 @@ return function()
             signal:destroy()
         end)
 
-        it("should fire connections connected at time of :fire call immediately if deferred=false", function()
+        it("should fire connected connections immediately if deferred=false", function()
             local signal = TrueSignal.new()
             local done1, done2 = {}, {}
 
@@ -69,7 +69,7 @@ return function()
             signal:destroy()
         end)
 
-        it("should fire connections connected at time of :fire call end-of-frame if deferred=true", function()
+        it("should fire connected connections end-of-frame if deferred=true", function()
             local signal = TrueSignal.new(true)
             local done1, done2 = {}, {}
 
@@ -101,55 +101,6 @@ return function()
             expect(done2[2]).to.be.ok()
 
             connection1:destroy()
-            connection2:destroy()
-            signal:destroy()
-        end)
-
-        it("should still fire connections that were disconnected after :fire call if disconnected in same frame as :fire call if deferred=true", function()
-            local signal = TrueSignal.new(true)
-            local done = {}
-
-            local connection = signal:connect(function(index)
-                done[index] = true
-            end)
-
-            signal:fire(1)
-
-            connection:disconnect()
-
-            expect(done[1]).to.never.be.ok()
-
-            task.defer(task.spawn, coroutine.running())
-            coroutine.yield()
-
-            expect(done[1]).to.be.ok()
-
-            connection:destroy()
-            signal:destroy()
-        end)
-
-        it("should still fire connections that were disconnected during :fire call if deferred=false", function()
-            local signal = TrueSignal.new()
-            local done1 = {}
-            local done2 = {}
-
-            local connection1 = signal:connect(function(index)
-                done1[index] = true
-            end)
-
-            local connection2 = signal:connect(function(index)
-                done2[index] = true
-                connection1:disconnect()
-            end)
-
-            signal:fire(1)
-            signal:fire(2)
-
-            expect(done1[1]).to.be.ok()
-            expect(done1[2]).to.never.be.ok()
-            expect(done2[1]).to.be.ok()
-            expect(done2[2]).to.be.ok()
-
             connection2:destroy()
             signal:destroy()
         end)

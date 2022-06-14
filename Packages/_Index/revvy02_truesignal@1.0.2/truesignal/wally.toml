@@ -1,7 +1,7 @@
 [package]
 name = "revvy02/truesignal"
 description = "Roblox Luau Signal class that allows for queueing and deferred behavior."
-version = "1.0.1"
+version = "1.0.2"
 license = "MIT"
 authors = ["revvy02"]
 realm = "shared"
