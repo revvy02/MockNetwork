@@ -18,29 +18,103 @@ return function()
         end)
 
         it("should create clients from passed ids if any are passed", function()
-            local server = Server.new("user0", "user1")
+            local server = Server.new({"user0", "user1"})
 
             expect(server:getClient("user0")).to.be.ok()
             expect(server:getClient("user1")).to.be.ok()
 
             server:destroy()
         end)
+    end)
 
-        it("should return the new Server object and each new client if ids are passed", function()
-            local server, user0, user1, user2 = Server.new("user0", "user1", "user2")
+    describe("Server:createRemoteEvent", function()
+        it("should create a RemoteEvent object on server and each client", function()
+            local server = Server.new()
 
-            expect(user0).to.be.ok()
-            expect(user1).to.be.ok()
-            expect(user2).to.be.ok()
+            local user1 = server:connect("user1")
+            local user2 = server:connect("user2")
 
-            expect(server:getClient("user0")).to.equal(user0)
-            expect(server:getClient("user1")).to.equal(user1)
-            expect(server:getClient("user2")).to.equal(user2)
+            server:createRemoteEvent("remoteEvent")
+
+            expect(server:getRemoteEvent("remoteEvent")).to.be.a("table")
+            expect(getmetatable(server:getRemoteEvent("remoteEvent"))).to.equal(RemoteEventServer)
+            
+            expect(user1:getRemoteEvent("remoteEvent")).to.be.a("table")
+            expect(getmetatable(user1:getRemoteEvent("remoteEvent"))).to.equal(RemoteEventClient)
+
+            expect(user2:getRemoteEvent("remoteEvent")).to.be.a("table")
+            expect(getmetatable(user2:getRemoteEvent("remoteEvent"))).to.equal(RemoteEventClient)
 
             server:destroy()
         end)
     end)
 
+    describe("Server:getRemoteEvent", function()
+        it("should get the RemoteEvent object from the server", function()
+            local server = Server.new()
+
+            local remote = server:createRemoteEvent("remoteEvent")
+
+            expect(server:getRemoteEvent("remoteEvent")).to.equal(remote)
+
+            server:destroy()
+        end)
+
+        it("should throw if a RemoteEvent with the passed name doesn't exist", function()
+            local server = Server.new()
+
+            expect(function()
+                server:getRemoteEvent("remoteEvent")
+            end).to.throw()
+
+            server:destroy()
+        end)
+    end)
+
+    describe("Server:createRemoteFunction", function()
+        it("should create a RemoteFunction object on server and each client", function()
+            local server = Server.new()
+
+            local user1 = server:connect("user1")
+            local user2 = server:connect("user2")
+
+            server:createRemoteFunction("remoteFunction")
+
+            expect(server:getRemoteFunction("remoteFunction")).to.be.a("table")
+            expect(getmetatable(server:getRemoteFunction("remoteFunction"))).to.equal(RemoteFunctionServer)
+            
+            expect(user1:getRemoteFunction("remoteFunction")).to.be.a("table")
+            expect(getmetatable(user1:getRemoteFunction("remoteFunction"))).to.equal(RemoteFunctionClient)
+
+            expect(user2:getRemoteFunction("remoteFunction")).to.be.a("table")
+            expect(getmetatable(user2:getRemoteFunction("remoteFunction"))).to.equal(RemoteFunctionClient)
+
+            server:destroy()
+        end)
+    end)
+
+    describe("Server:getRemoteFunction", function()
+        it("should get the RemoteFunction object from the server", function()
+            local server = Server.new()
+
+            local remote = server:createRemoteFunction("remoteFunction")
+
+            expect(server:getRemoteFunction("remoteFunction")).to.equal(remote)
+
+            server:destroy()
+        end)
+
+        it("should throw if a RemoteFunction with the passed name doesn't exist", function()
+            local server = Server.new()
+
+            expect(function()
+                server:getRemoteFunction("remoteFunction")
+            end).to.throw()
+
+            server:destroy()
+        end)
+    end)
+    
     describe("Server:connect", function()
         it("should return a client object with the id", function()
             local server = Server.new()
@@ -161,89 +235,29 @@ return function()
         end)
     end)
 
-    describe("Server:createRemoteEvent", function()
-        it("should create a RemoteEvent object on server and each client", function()
-            local server = Server.new()
-
-            local user0 = server:connect("user0")
-            local user1 = server:connect("user1")
-
-            server:createRemoteEvent("remoteEvent")
-
-            expect(server:getRemoteEvent("remoteEvent")).to.be.a("table")
-            expect(getmetatable(server:getRemoteEvent("remoteEvent"))).to.equal(RemoteEventServer)
+    describe("Server:getClientsMapped", function()
+        it("should return a dictionary of currently connected clients with their ids mapped to the client instance", function()
+            local server = Server.new({"user1", "user2", "user3"})
+            local clients = server:getClientsMapped()
             
-            expect(user0:getRemoteEvent("remoteEvent")).to.be.a("table")
-            expect(getmetatable(user0:getRemoteEvent("remoteEvent"))).to.equal(RemoteEventClient)
-
-            expect(user1:getRemoteEvent("remoteEvent")).to.be.a("table")
-            expect(getmetatable(user1:getRemoteEvent("remoteEvent"))).to.equal(RemoteEventClient)
+            expect(clients.user1).to.equal(server:getClient("user1"))
+            expect(clients.user2).to.equal(server:getClient("user2"))
+            expect(clients.user3).to.equal(server:getClient("user3"))
 
             server:destroy()
         end)
     end)
 
-    describe("Server:getRemoteEvent", function()
-        it("should get the RemoteEvent object from the server", function()
-            local server = Server.new()
-
-            local remote = server:createRemoteEvent("remoteEvent")
-
-            expect(server:getRemoteEvent("remoteEvent")).to.equal(remote)
-
-            server:destroy()
-        end)
-
-        it("should throw if a RemoteEvent with the passed name doesn't exist", function()
-            local server = Server.new()
-
-            expect(function()
-                server:getRemoteEvent("remoteEvent")
-            end).to.throw()
-
-            server:destroy()
-        end)
-    end)
-
-    describe("Server:createRemoteFunction", function()
-        it("should create a RemoteFunction object on server and each client", function()
-            local server = Server.new()
-
-            local user0 = server:connect("user0")
-            local user1 = server:connect("user1")
-
-            server:createRemoteFunction("remoteFunction")
-
-            expect(server:getRemoteFunction("remoteFunction")).to.be.a("table")
-            expect(getmetatable(server:getRemoteFunction("remoteFunction"))).to.equal(RemoteFunctionServer)
+    describe("Server:getClientsListed", function()
+        it("should return a list of currently connected clients", function()
+            local server = Server.new({"user1", "user2", "user3"})
+            local clients = server:getClientsListed()
             
-            expect(user0:getRemoteFunction("remoteFunction")).to.be.a("table")
-            expect(getmetatable(user0:getRemoteFunction("remoteFunction"))).to.equal(RemoteFunctionClient)
+            local user1, user2, user3 = server:getClient("user1"), server:getClient("user2"), server:getClient("user3")
 
-            expect(user1:getRemoteFunction("remoteFunction")).to.be.a("table")
-            expect(getmetatable(user1:getRemoteFunction("remoteFunction"))).to.equal(RemoteFunctionClient)
-
-            server:destroy()
-        end)
-    end)
-
-    describe("Server:getRemoteFunction", function()
-        it("should get the RemoteFunction object from the server", function()
-            local server = Server.new()
-
-            local remote = server:createRemoteFunction("remoteFunction")
-
-            expect(server:getRemoteFunction("remoteFunction")).to.equal(remote)
-
-            server:destroy()
-        end)
-
-        it("should throw if a RemoteFunction with the passed name doesn't exist", function()
-            local server = Server.new()
-
-            expect(function()
-                server:getRemoteFunction("remoteFunction")
-            end).to.throw()
+            expect(table.find(clients, user1)).to.be.ok()
+            expect(table.find(clients, user2)).to.be.ok()
+            expect(table.find(clients, user3)).to.be.ok()
 
             server:destroy()
         end)
@@ -254,9 +268,9 @@ return function()
             local server = Server.new()
             local done = {}
 
-            local user0 = server:connect("user0")
             local user1 = server:connect("user1")
             local user2 = server:connect("user2")
+            local user3 = server:connect("user3")
 
             local conn = server.clientDisconnecting:connect(function(client)
                 done[client] = true
@@ -264,13 +278,13 @@ return function()
 
             server:destroy()
 
-            expect(user0.connected).to.equal(false)
             expect(user1.connected).to.equal(false)
             expect(user2.connected).to.equal(false)
+            expect(user3.connected).to.equal(false)
 
-            expect(done[user0]).to.equal(true)
             expect(done[user1]).to.equal(true)
             expect(done[user2]).to.equal(true)
+            expect(done[user3]).to.equal(true)
         end)
 
         it("should set destroyed field to true", function()

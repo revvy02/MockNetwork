@@ -22,7 +22,7 @@ Server.__index = Server
     @param ... string
     @return Server
 ]=]
-function Server.new(...)
+function Server.new(clients)
     local self = setmetatable({}, Server)
 
     self._clients = {}
@@ -32,15 +32,13 @@ function Server.new(...)
     self.clientConnected = TrueSignal.new()
     self.clientDisconnecting = TrueSignal.new()
 
-    local clients = {}
-
-    if select("#", ...) > 0 then
-        for _, id in pairs({...}) do
-            table.insert(clients, self:connect(id))
+    if clients then
+        for _, id in pairs(clients) do
+            self:connect(id)
         end
     end
 
-    return self, table.unpack(clients)
+    return self
 end
 
 --[=[
@@ -124,6 +122,36 @@ end
 ]=]
 function Server:getClient(id)
     return self._clients[id]
+end
+
+--[=[
+    Returns a map with each connected client's id mapped to the client instance
+
+    @return table
+]=]
+function Server:getClientsMapped()
+    local map = {}
+
+    for id, client in pairs(self._clients) do
+        map[id] = client
+    end
+
+    return map
+end
+
+--[=[
+    Returns a list with each connected client
+
+    @return table
+]=]
+function Server:getClientsListed()
+    local list = {}
+
+    for _, client in pairs(self._clients) do
+        table.insert(list, client)
+    end
+
+    return list
 end
 
 --[=[
