@@ -19,7 +19,7 @@ Server.__index = Server
 --[=[
     Constructs a new Server object
 
-    @param ... string
+    @param clients table
     @return Server
 ]=]
 function Server.new(clients)
