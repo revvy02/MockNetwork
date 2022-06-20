@@ -5,7 +5,6 @@
 	<a href="https://revvy02.github.io/MockNetwork/"><strong>View docs</strong></a>
 </div>
 <!--moonwave-hide-before-this-line-->
-<div>&nbsp;</div>
 
 ## Usage
 MockNetwork is designed for writing tests for things that have side effects across a network.
@@ -18,14 +17,14 @@ Examples include things like a networking library, or a player DataStore replica
 MockNetwork serves to replicate specific behavior of Roblox's RemoteEvent and RemoteFunction instances such as the following:
 
 **Queueing**
-Firing a remote will queue the request on the receiving side until a handler is set or a connection is made
+\nFiring a remote will queue the request on the receiving side until a handler is set or a connection is made
 
 **Mutates Instance Keys in Tables**
-Passing a table that has an instance as keys will result in the key being converted to a string
+\nPassing a table that has an instances as keys will result in the keys being converted to strings
 
 ## Examples
 **Using the Server class**
-Can be used if you want to test behavior for multiple different clients
+\nCan be used if you want to test behavior for multiple different clients
 
 ```lua
 local server = MockNetwork.Server.new({"user1", "user2"})
@@ -45,7 +44,7 @@ expect(user1RemoteEvent.OnClientEvent:Wait()).to.equal("Hello user2!")
 ```
 
 **Using MockRemoteEvent**
-Can be used if you want to just test behavior for a single client
+\nCan be used if you want to just test behavior for a single client
 
 ```lua
 local mockRemoteEvent = MockNetwork.MockRemoteEvent.new("user")
