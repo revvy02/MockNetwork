@@ -53,3 +53,21 @@ mockRemoteEvent:FireClient("user", "Hello user!")
 
 expect(mockRemoteEvent.OnClientEvent:Wait()).to.equal("Hello user!")
 ```
+
+*Using MockRemoteFunction*\
+Can be used if you want to just test behavior for a single client
+
+```lua
+local mockRemoteFunction = MockNetwork.MockRemoteFunction.new("user")
+local response
+
+task.spawn(function()
+	mockRemoteFunction:InvokeClient("user", 1)
+end)
+
+mockRemoteFunction.OnClientInvoke = function(num)
+	return num * 2
+end
+
+expect(response).to.equal(2)
+```
