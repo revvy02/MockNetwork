@@ -62,7 +62,7 @@ local mockRemoteFunction = MockNetwork.MockRemoteFunction.new("user")
 local response
 
 task.spawn(function()
-	mockRemoteFunction:InvokeClient("user", 1)
+	response = mockRemoteFunction:InvokeClient("user", 1)
 end)
 
 mockRemoteFunction.OnClientInvoke = function(num)
