@@ -48,6 +48,40 @@ return function()
 
             server:destroy()
         end)
+
+        it("should pass deep copies of data and convert instance keys to strings", function()
+            local server = Server.new()
+            local user = server:connect("user")
+            
+            local remoteEvent = server:createRemoteEvent("remoteEvent")
+
+            local part = Instance.new("Part")
+
+            local data = {
+                a = {[part] = 1},
+                b = {key = 2},
+            }
+
+            remoteEvent:fireClient(user, data, data, part)
+
+            local data1, data2, passedPart = user:getRemoteEvent("remoteEvent").OnClientEvent:wait()
+
+            expect(data1).to.never.equal(data)
+            expect(data2).to.never.equal(data)
+
+            expect(data1).to.never.equal(data2)
+
+            expect(data1.a[part]).to.never.be.ok()
+            expect(data1.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(data2.a[part]).to.never.be.ok()
+            expect(data2.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(passedPart).to.equal(part)
+
+            part:Destroy()
+            server:destroy()
+        end)
     end)
 
     describe("RemoteEventServer:fireAllClients", function()
@@ -92,6 +126,55 @@ return function()
                 expect(value3).to.equal(1)
             end)
 
+            server:destroy()
+        end)
+
+        it("should pass deep copies of data and convert instance keys to strings", function()
+            local server = Server.new()
+            local user1 = server:connect("user1")
+            local user2 = server:connect("user2")
+
+            local remoteEvent = server:createRemoteEvent("remoteEvent")
+
+            local part = Instance.new("Part")
+
+            local data = {
+                a = {[part] = 1},
+                b = {key = 2},
+            }
+
+            remoteEvent:fireAllClients(data, data, part)
+
+            local user1Data1, user1Data2, user1PassedPart = user1:getRemoteEvent("remoteEvent").OnClientEvent:wait()
+            local user2Data1, user2Data2, user2PassedPart = user2:getRemoteEvent("remoteEvent").OnClientEvent:wait()
+
+            expect(user1Data1).to.never.equal(data)
+            expect(user1Data2).to.never.equal(data)
+
+            expect(user1Data1).to.never.equal(user1Data2)
+
+            expect(user1Data1.a[part]).to.never.be.ok()
+            expect(user1Data1.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(user1Data2.a[part]).to.never.be.ok()
+            expect(user1Data2.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(user1PassedPart).to.equal(part)
+
+            expect(user2Data1).to.never.equal(data)
+            expect(user2Data2).to.never.equal(data)
+
+            expect(user2Data1).to.never.equal(user2Data2)
+
+            expect(user2Data1.a[part]).to.never.be.ok()
+            expect(user2Data1.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(user2Data2.a[part]).to.never.be.ok()
+            expect(user2Data2.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(user2PassedPart).to.equal(part)
+
+            part:Destroy()
             server:destroy()
         end)
     end)

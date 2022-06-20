@@ -52,6 +52,36 @@ return function()
 
             mockRemoteEvent:destroy()
         end)
+
+        it("should pass deep copies of data and convert instance keys to strings", function()
+            local mockRemoteEvent = MockRemoteEvent.new("user")
+            local part = Instance.new("Part")
+
+            local data = {
+                a = {[part] = 1},
+                b = {key = 2},
+            }
+
+            mockRemoteEvent:fireServer(data, data, part)
+
+            local _, data1, data2, passedPart = mockRemoteEvent.OnServerEvent:wait()
+
+            expect(data1).to.never.equal(data)
+            expect(data2).to.never.equal(data)
+
+            expect(data1).to.never.equal(data2)
+
+            expect(data1.a[part]).to.never.be.ok()
+            expect(data1.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(data2.a[part]).to.never.be.ok()
+            expect(data2.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(passedPart).to.equal(part)
+
+            part:Destroy()
+            mockRemoteEvent:destroy()
+        end)
     end)
 
     describe("MockRemoteEvent:fireClient", function()
@@ -94,6 +124,36 @@ return function()
 
             mockRemoteEvent:destroy()
         end)
+
+        it("should pass deep copies of data and convert instance keys to strings", function()
+            local mockRemoteEvent = MockRemoteEvent.new("user")
+            local part = Instance.new("Part")
+
+            local data = {
+                a = {[part] = 1},
+                b = {key = 2},
+            }
+
+            mockRemoteEvent:fireClient("user", data, data, part)
+
+            local data1, data2, passedPart = mockRemoteEvent.OnClientEvent:wait()
+
+            expect(data1).to.never.equal(data)
+            expect(data2).to.never.equal(data)
+
+            expect(data1).to.never.equal(data2)
+
+            expect(data1.a[part]).to.never.be.ok()
+            expect(data1.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(data2.a[part]).to.never.be.ok()
+            expect(data2.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(passedPart).to.equal(part)
+
+            part:Destroy()
+            mockRemoteEvent:destroy()
+        end)
     end)
 
     describe("MockRemoteEvent:fireAllClients", function()
@@ -124,6 +184,36 @@ return function()
             expect(value0).to.equal(0)
             expect(value1).to.equal(1)
 
+            mockRemoteEvent:destroy()
+        end)
+
+        it("should pass deep copies of data and convert instance keys to strings", function()
+            local mockRemoteEvent = MockRemoteEvent.new("user")
+            local part = Instance.new("Part")
+
+            local data = {
+                a = {[part] = 1},
+                b = {key = 2},
+            }
+
+            mockRemoteEvent:fireAllClients(data, data, part)
+
+            local data1, data2, passedPart = mockRemoteEvent.OnClientEvent:wait()
+
+            expect(data1).to.never.equal(data)
+            expect(data2).to.never.equal(data)
+
+            expect(data1).to.never.equal(data2)
+
+            expect(data1.a[part]).to.never.be.ok()
+            expect(data1.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(data2.a[part]).to.never.be.ok()
+            expect(data2.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(passedPart).to.equal(part)
+
+            part:Destroy()
             mockRemoteEvent:destroy()
         end)
     end)

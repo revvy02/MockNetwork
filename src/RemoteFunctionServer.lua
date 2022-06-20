@@ -1,5 +1,7 @@
 local TrueSignal = require(script.Parent.Parent.TrueSignal)
 
+local prepArgs = require(script.Parent.prepArgs)
+
 --[=[
     RemoteFunctionServer class
 
@@ -60,11 +62,11 @@ end
 ]=]
 function RemoteFunctionServer:_invokeServer(client, ...)
     if self._internal.OnServerInvoke then
-        return self._internal.OnServerInvoke(client, ...)
+        return self._internal.OnServerInvoke(client, prepArgs(...))
     end
     
     local signal = TrueSignal.new()
-    signal.args = table.pack(client, ...)
+    signal.args = table.pack(client, prepArgs(...))
 
     table.insert(self._signals, signal)
     

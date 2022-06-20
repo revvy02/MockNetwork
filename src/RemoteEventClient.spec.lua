@@ -37,5 +37,39 @@ return function()
 
             server:destroy()
         end)
+
+        it("should pass deep copies of data and convert instance keys to strings", function()
+            local server = Server.new()
+            local user = server:connect("user")
+            
+            local remoteEvent = server:createRemoteEvent("remoteEvent")
+
+            local part = Instance.new("Part")
+
+            local data = {
+                a = {[part] = 1},
+                b = {key = 2},
+            }
+
+            user:getRemoteEvent("remoteEvent"):fireServer(data, data, part)
+
+            local _, data1, data2, passedPart = remoteEvent.OnServerEvent:wait()
+
+            expect(data1).to.never.equal(data)
+            expect(data2).to.never.equal(data)
+
+            expect(data1).to.never.equal(data2)
+
+            expect(data1.a[part]).to.never.be.ok()
+            expect(data1.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(data2.a[part]).to.never.be.ok()
+            expect(data2.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(passedPart).to.equal(part)
+
+            part:Destroy()
+            server:destroy()
+        end)
     end)
 end

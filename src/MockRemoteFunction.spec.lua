@@ -93,6 +93,43 @@ return function()
 
             mockRemoteFunction:destroy()
         end)
+
+        it("should pass deep copies of data and convert instance keys to strings", function()
+            local mockRemoteFunction = MockRemoteFunction.new("user")
+            local part = Instance.new("Part")
+
+            local data = {
+                a = {[part] = 1},
+                b = {key = 2},
+            }
+
+            task.spawn(function()
+                mockRemoteFunction:invokeServer( data, data, part)
+            end)
+
+            local data1, data2, passedPart
+
+            mockRemoteFunction.OnServerInvoke = function(_, ...)
+                data1, data2, passedPart = ...
+            end
+
+            expect(data1).to.never.equal(data)
+            expect(data2).to.never.equal(data)
+
+            expect(data1).to.never.equal(data2)
+
+            expect(data1.a[part]).to.never.be.ok()
+            expect(data1.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(data2.a[part]).to.never.be.ok()
+            expect(data2.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(passedPart).to.equal(part)
+
+            part:Destroy()
+            mockRemoteFunction:destroy()
+        end)
+
     end)
 
     describe("MockRemoteFunction:invokeClient", function()
@@ -138,6 +175,42 @@ return function()
                 mockRemoteFunction:invokeClient("player", 1)
             end).to.throw()
 
+            mockRemoteFunction:destroy()
+        end)
+
+        it("should pass deep copies of data and convert instance keys to strings", function()
+            local mockRemoteFunction = MockRemoteFunction.new("user")
+            local part = Instance.new("Part")
+
+            local data = {
+                a = {[part] = 1},
+                b = {key = 2},
+            }
+
+            task.spawn(function()
+                mockRemoteFunction:invokeClient("user", data, data, part)
+            end)
+
+            local data1, data2, passedPart
+
+            mockRemoteFunction.OnClientInvoke = function(...)
+                data1, data2, passedPart = ...
+            end
+
+            expect(data1).to.never.equal(data)
+            expect(data2).to.never.equal(data)
+
+            expect(data1).to.never.equal(data2)
+
+            expect(data1.a[part]).to.never.be.ok()
+            expect(data1.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(data2.a[part]).to.never.be.ok()
+            expect(data2.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(passedPart).to.equal(part)
+
+            part:Destroy()
             mockRemoteFunction:destroy()
         end)
     end)

@@ -1,5 +1,7 @@
 local TrueSignal = require(script.Parent.Parent.TrueSignal)
 
+local prepArgs = require(script.Parent.prepArgs)
+
 --[=[
     RemoteEventServer class
 
@@ -39,7 +41,7 @@ end
     @private
 ]=]
 function RemoteEventServer:_fireServer(client, ...)
-    self.OnServerEvent:fire(client, ...)
+    self.OnServerEvent:fire(client, prepArgs(...))
 end
 
 --[=[

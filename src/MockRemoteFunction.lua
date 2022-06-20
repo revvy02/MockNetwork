@@ -1,5 +1,7 @@
 local TrueSignal = require(script.Parent.Parent.TrueSignal)
 
+local prepArgs = require(script.Parent.prepArgs)
+
 --[=[
     MockRemoteFunction class
 
@@ -77,11 +79,11 @@ end
 ]=]
 function MockRemoteFunction:invokeServer(...)
     if self._internal.OnServerInvoke then
-        return self._internal.OnServerInvoke(self._client, ...)
+        return self._internal.OnServerInvoke(self._client, prepArgs(...))
     end
 
     local signal = TrueSignal.new()
-    signal.args = table.pack(...)
+    signal.args = table.pack(prepArgs(...))
 
     table.insert(self._serverSignals, signal)
 
@@ -101,11 +103,11 @@ function MockRemoteFunction:invokeClient(client, ...)
     assert(client == self._client, "Invalid client passed")
 
     if self._internal.OnClientInvoke then
-        return self._internal.OnClientInvoke(...)
+        return self._internal.OnClientInvoke(prepArgs(...))
     end
 
     local signal = TrueSignal.new()
-    signal.args = table.pack(...)
+    signal.args = table.pack(prepArgs(...))
 
     table.insert(self._clientSignals, signal)
 

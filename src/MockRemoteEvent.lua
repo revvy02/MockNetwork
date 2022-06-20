@@ -1,5 +1,7 @@
 local TrueSignal = require(script.Parent.Parent.TrueSignal)
 
+local prepArgs = require(script.Parent.prepArgs)
+
 --[=[
     MockRemoteEvent class
 
@@ -46,7 +48,7 @@ end
     @param ... any
 ]=]
 function MockRemoteEvent:fireServer(...)
-    self.OnServerEvent:fire(self._client, ...)
+    self.OnServerEvent:fire(self._client, prepArgs(...))
 end
 
 --[=[
@@ -58,7 +60,7 @@ end
 function MockRemoteEvent:fireClient(client, ...)
     assert(client == self._client, "Invalid client passed")
 
-    self.OnClientEvent:fire(...)
+    self.OnClientEvent:fire(prepArgs(...))
 end
 
 --[=[
@@ -67,7 +69,7 @@ end
     @param ... any
 ]=]
 function MockRemoteEvent:fireAllClients(...)
-    self.OnClientEvent:fire(...)
+    self.OnClientEvent:fire(prepArgs(...))
 end
 
 --[=[
