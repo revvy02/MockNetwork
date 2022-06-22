@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="generator" content="Docusaurus v2.0.0-beta.9">
 <title data-react-helmet="true">Client | MockNetwork</title><meta data-react-helmet="true" property="og:title" content="Client | MockNetwork"><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="description" content="Client class"><meta data-react-helmet="true" property="og:description" content="Client class"><meta data-react-helmet="true" property="og:url" content="https://revvy02.github.io/MockNetwork/api/Client"><meta data-react-helmet="true" name="docusaurus_locale" content="en"><meta data-react-helmet="true" name="docusaurus_tag" content="default"><link data-react-helmet="true" rel="canonical" href="https://revvy02.github.io/MockNetwork/api/Client"><link data-react-helmet="true" rel="alternate" href="https://revvy02.github.io/MockNetwork/api/Client" hreflang="en"><link data-react-helmet="true" rel="alternate" href="https://revvy02.github.io/MockNetwork/api/Client" hreflang="x-default"><link rel="stylesheet" href="/MockNetwork/assets/css/styles.06f234af.css">
-<link rel="preload" href="/MockNetwork/assets/js/runtime~main.73d98042.js" as="script">
-<link rel="preload" href="/MockNetwork/assets/js/main.f0fbacd7.js" as="script">
+<link rel="preload" href="/MockNetwork/assets/js/runtime~main.a17ef87a.js" as="script">
+<link rel="preload" href="/MockNetwork/assets/js/main.9620f62e.js" as="script">
 </head>
 <body>
 <script>!function(){function e(e){document.documentElement.setAttribute("data-theme",e)}var t=function(){var e=null;try{e=localStorage.getItem("theme")}catch(e){}return e}();null!==t?e(t):window.matchMedia("(prefers-color-scheme: dark)").matches?e("dark"):(window.matchMedia("(prefers-color-scheme: light)").matches,e("light"))}()</script><div id="__docusaurus">
@@ -22,7 +22,11 @@
 <p>Gets the RemoteFunctionClient if it exists, returns nil otherwise</p>
 </div><h3>Errors</h3><table class="errorTable_25fH"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>&quot;%s is not a valid RemoteFunction&quot;</td><td></td></tr></tbody></table><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="disconnect"><code style="text-decoration:none">disconnect</code><a aria-hidden="true" class="hash-link" href="#disconnect" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/revvy02/MockNetwork/blob/master/src/Client.lua#L93"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Client<!-- -->:</code><code class="green_3LnD">disconnect</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
 <p>Disconnects the client from the server</p>
-</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="destroy"><code style="text-decoration:none">destroy</code><a aria-hidden="true" class="hash-link" href="#destroy" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/revvy02/MockNetwork/blob/master/src/Client.lua#L112"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Client<!-- -->:</code><code class="green_3LnD">destroy</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="mapRemoteEvents"><code style="text-decoration:none">mapRemoteEvents</code><a aria-hidden="true" class="hash-link" href="#mapRemoteEvents" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/revvy02/MockNetwork/blob/master/src/Client.lua#L115"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Client<!-- -->:</code><code class="green_3LnD">mapRemoteEvents</code><code>(</code><code>fn<!-- -->: </code><code class="blue_2Afy">function</code><code>) → </code><code class="blue_2Afy">table</code></div><div>
+<p>Returns a table that maps the remoteEvent name and object with the passed function</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="mapRemoteFunctions"><code style="text-decoration:none">mapRemoteFunctions</code><a aria-hidden="true" class="hash-link" href="#mapRemoteFunctions" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/revvy02/MockNetwork/blob/master/src/Client.lua#L138"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Client<!-- -->:</code><code class="green_3LnD">mapRemoteFunctions</code><code>(</code><code>fn<!-- -->: </code><code class="blue_2Afy">function</code><code>) → </code><code class="blue_2Afy">table</code></div><div>
+<p>Returns a table that maps the remoteFunction name and object with the passed function</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="destroy"><code style="text-decoration:none">destroy</code><a aria-hidden="true" class="hash-link" href="#destroy" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/revvy02/MockNetwork/blob/master/src/Client.lua#L158"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Client<!-- -->:</code><code class="green_3LnD">destroy</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
 <p>Alias for disconnect but sets destroyed field to true</p>
 </div></div></article></div><details><summary>Show raw api</summary><pre style="max-width:100%;white-space:pre-wrap">{
     &quot;functions&quot;: [
@@ -122,13 +126,57 @@
             }
         },
         {
+            &quot;name&quot;: &quot;mapRemoteEvents&quot;,
+            &quot;desc&quot;: &quot;Returns a table that maps the remoteEvent name and object with the passed function&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;fn&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;function&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;table&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 115,
+                &quot;path&quot;: &quot;src/Client.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;mapRemoteFunctions&quot;,
+            &quot;desc&quot;: &quot;Returns a table that maps the remoteFunction name and object with the passed function&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;fn&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;function&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;table&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 138,
+                &quot;path&quot;: &quot;src/Client.lua&quot;
+            }
+        },
+        {
             &quot;name&quot;: &quot;destroy&quot;,
             &quot;desc&quot;: &quot;Alias for disconnect but sets destroyed field to true&quot;,
             &quot;params&quot;: [],
             &quot;returns&quot;: [],
             &quot;function_type&quot;: &quot;method&quot;,
             &quot;source&quot;: {
-                &quot;line&quot;: 112,
+                &quot;line&quot;: 158,
                 &quot;path&quot;: &quot;src/Client.lua&quot;
             }
         }
@@ -162,8 +210,8 @@
         &quot;line&quot;: 9,
         &quot;path&quot;: &quot;src/Client.lua&quot;
     }
-}</pre></details></div><div class="col col--3"><div class="tableOfContents_35-E thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#types" class="table-of-contents__link toc-highlight">Types</a></li><li><a href="#properties" class="table-of-contents__link toc-highlight">Properties</a><ul><li><a href="#connected" class="table-of-contents__link toc-highlight">connected</a></li><li><a href="#id" class="table-of-contents__link toc-highlight">id</a></li></ul></li><li><a href="#functions" class="table-of-contents__link toc-highlight">Functions</a><ul><li><a href="#destroy" class="table-of-contents__link toc-highlight">:destroy</a></li><li><a href="#disconnect" class="table-of-contents__link toc-highlight">:disconnect</a></li><li><a href="#getRemoteEvent" class="table-of-contents__link toc-highlight">:getRemoteEvent</a></li><li><a href="#getRemoteFunction" class="table-of-contents__link toc-highlight">:getRemoteFunction</a></li></ul></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2022 revvy02. Built with Moonwave and Docusaurus.</div></div></div></footer></div>
-<script src="/MockNetwork/assets/js/runtime~main.73d98042.js"></script>
-<script src="/MockNetwork/assets/js/main.f0fbacd7.js"></script>
+}</pre></details></div><div class="col col--3"><div class="tableOfContents_35-E thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#types" class="table-of-contents__link toc-highlight">Types</a></li><li><a href="#properties" class="table-of-contents__link toc-highlight">Properties</a><ul><li><a href="#connected" class="table-of-contents__link toc-highlight">connected</a></li><li><a href="#id" class="table-of-contents__link toc-highlight">id</a></li></ul></li><li><a href="#functions" class="table-of-contents__link toc-highlight">Functions</a><ul><li><a href="#destroy" class="table-of-contents__link toc-highlight">:destroy</a></li><li><a href="#disconnect" class="table-of-contents__link toc-highlight">:disconnect</a></li><li><a href="#getRemoteEvent" class="table-of-contents__link toc-highlight">:getRemoteEvent</a></li><li><a href="#getRemoteFunction" class="table-of-contents__link toc-highlight">:getRemoteFunction</a></li><li><a href="#mapRemoteEvents" class="table-of-contents__link toc-highlight">:mapRemoteEvents</a></li><li><a href="#mapRemoteFunctions" class="table-of-contents__link toc-highlight">:mapRemoteFunctions</a></li></ul></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2022 revvy02. Built with Moonwave and Docusaurus.</div></div></div></footer></div>
+<script src="/MockNetwork/assets/js/runtime~main.a17ef87a.js"></script>
+<script src="/MockNetwork/assets/js/main.9620f62e.js"></script>
 </body>
 </html>
