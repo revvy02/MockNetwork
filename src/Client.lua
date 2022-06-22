@@ -107,6 +107,52 @@ function Client:disconnect()
 end
 
 --[=[
+    Returns a table that maps the remoteEvent name and object with the passed function
+
+    @param fn function
+    @return table
+]=]
+function Client:mapRemoteEvents(fn)
+    local map = {}
+    
+    if fn then
+        for name, client in self._remoteEvents do
+            local key, value = fn(name, client)
+            map[key] = value
+        end
+    else
+        for name, client in self._remoteEvents do
+            map[name] = client
+        end
+    end
+
+    return map
+end
+
+--[=[
+    Returns a table that maps the remoteFunction name and object with the passed function
+
+    @param fn function
+    @return table
+]=]
+function Client:mapRemoteFunctions(fn)
+    local map = {}
+    
+    if fn then
+        for name, client in self._remoteFunctions do
+            local key, value = fn(name, client)
+            map[key] = value
+        end
+    else
+        for name, client in self._remoteFunctions do
+            map[name] = client
+        end
+    end
+
+    return map
+end
+
+--[=[
     Alias for disconnect but sets destroyed field to true
 ]=]
 function Client:destroy()

@@ -235,10 +235,25 @@ return function()
         end)
     end)
 
-    describe("Server:getClientsMapped", function()
-        it("should return a dictionary of currently connected clients with their ids mapped to the client instance", function()
+    describe("Server:getClients", function()
+        it("should return a list of currently connected clients", function()
             local server = Server.new({"user1", "user2", "user3"})
-            local clients = server:getClientsMapped()
+            local clients = server:getClients()
+            
+            local user1, user2, user3 = server:getClient("user1"), server:getClient("user2"), server:getClient("user3")
+
+            expect(table.find(clients, user1)).to.be.ok()
+            expect(table.find(clients, user2)).to.be.ok()
+            expect(table.find(clients, user3)).to.be.ok()
+
+            server:destroy()
+        end)
+    end)
+
+    describe("Server:mapClients", function()
+        it("should return a dictionary that maps the client id to the object if no function is passed", function()
+            local server = Server.new({"user1", "user2", "user3"})
+            local clients = server:mapClients()
             
             expect(clients.user1).to.equal(server:getClient("user1"))
             expect(clients.user2).to.equal(server:getClient("user2"))
@@ -246,12 +261,30 @@ return function()
 
             server:destroy()
         end)
+        
+        it("should return a dictionary that is properly mapped if a function is passed", function()
+            local server = Server.new({"user1", "user2", "user3"})
+
+            local clients = server:mapClients(function(id, client)
+                return string.upper(id), typeof(client)
+            end)
+            
+            expect(clients.user1).to.never.be.ok()
+            expect(clients.user2).to.never.be.ok()
+            expect(clients.user3).to.never.be.ok()
+
+            expect(clients.USER1).to.equal("table")
+            expect(clients.USER2).to.equal("table")
+            expect(clients.USER3).to.equal("table")
+
+            server:destroy()
+        end)
     end)
 
-    describe("Server:getClientsListed", function()
+    describe("Server:getClients", function()
         it("should return a list of currently connected clients", function()
             local server = Server.new({"user1", "user2", "user3"})
-            local clients = server:getClientsListed()
+            local clients = server:getClients()
             
             local user1, user2, user3 = server:getClient("user1"), server:getClient("user2"), server:getClient("user3")
 

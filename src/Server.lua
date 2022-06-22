@@ -125,26 +125,11 @@ function Server:getClient(id)
 end
 
 --[=[
-    Returns a map with each connected client's id mapped to the client instance
+    Returns a table with each connected client
 
     @return table
 ]=]
-function Server:getClientsMapped()
-    local map = {}
-
-    for id, client in pairs(self._clients) do
-        map[id] = client
-    end
-
-    return map
-end
-
---[=[
-    Returns a list with each connected client
-
-    @return table
-]=]
-function Server:getClientsListed()
+function Server:getClients()
     local list = {}
 
     for _, client in pairs(self._clients) do
@@ -152,6 +137,29 @@ function Server:getClientsListed()
     end
 
     return list
+end
+
+--[=[
+    Returns a table that maps the client id and object with the passed function
+
+    @param fn function
+    @return table
+]=]
+function Server:mapClients(fn)
+    local map = {}
+    
+    if fn then
+        for id, client in self._clients do
+            local key, value = fn(id, client)
+            map[key] = value
+        end
+    else
+        for id, client in self._clients do
+            map[id] = client
+        end
+    end
+
+    return map
 end
 
 --[=[

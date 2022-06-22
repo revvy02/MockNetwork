@@ -81,6 +81,87 @@ return function()
         end)
     end)
 
+    describe("Client:mapRemoteEvents", function()
+        it("should return a dictionary that maps the remoteEvent name to the object if no function is passed", function()
+            local server = Server.new()
+            local client = server:connect("user")
+
+            server:createRemoteEvent("remoteEvent1")
+            server:createRemoteEvent("remoteEvent2")
+
+            local map = client:mapRemoteEvents()
+
+            expect(map.remoteEvent1).to.be.ok()
+            expect(map.remoteEvent2).to.be.ok()
+
+            expect(map.remoteEvent1).to.equal(client:getRemoteEvent("remoteEvent1"))
+            expect(map.remoteEvent2).to.equal(client:getRemoteEvent("remoteEvent2"))
+
+            server:destroy()
+        end)
+
+        it("should return a dictionary that is properly mapped if a function is passed", function()
+            local server = Server.new()
+            local client = server:connect("user")
+
+            server:createRemoteEvent("remoteEvent1")
+            server:createRemoteEvent("remoteEvent2")
+
+            local map = client:mapRemoteEvents(function(name, remoteEvent)
+                return string.upper(name), typeof(remoteEvent)
+            end)
+
+            expect(map.remoteEvent1).to.never.be.ok()
+            expect(map.remoteEvent2).to.never.be.ok()
+
+            expect(map.REMOTEEVENT1).to.equal("table")
+            expect(map.REMOTEEVENT2).to.equal("table")
+
+            server:destroy()
+        end)
+    end)
+
+    describe("Client:mapRemoteFunctions", function()
+        it("should return a dictionary that maps the remoteFunction name to the object if no function is passed", function()
+            local server = Server.new()
+            local client = server:connect("user")
+
+            server:createRemoteFunction("remoteFunction1")
+            server:createRemoteFunction("remoteFunction2")
+
+            local map = client:mapRemoteFunctions()
+
+            expect(map.remoteFunction1).to.be.ok()
+            expect(map.remoteFunction2).to.be.ok()
+
+            expect(map.remoteFunction1).to.equal(client:getRemoteFunction("remoteFunction1"))
+            expect(map.remoteFunction2).to.equal(client:getRemoteFunction("remoteFunction2"))
+
+            server:destroy()
+        end)
+
+        it("should return a dictionary that is properly mapped if a function is passed", function()
+            local server = Server.new()
+            local client = server:connect("user")
+
+            server:createRemoteFunction("remoteFunction1")
+            server:createRemoteFunction("remoteFunction2")
+
+            local map = client:mapRemoteFunctions(function(name, remoteFunction)
+                return string.upper(name), typeof(remoteFunction)
+            end)
+
+            expect(map.remoteFunction1).to.never.be.ok()
+            expect(map.remoteFunction2).to.never.be.ok()
+
+            expect(map.REMOTEFUNCTION1).to.equal("table")
+            expect(map.REMOTEFUNCTION2).to.equal("table")
+
+            server:destroy()
+        end)
+    end)
+
+
     describe("Client:destroy", function()
         it("should disconect the client", function()
             local server = Server.new()
