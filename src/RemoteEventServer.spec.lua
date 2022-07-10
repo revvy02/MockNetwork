@@ -49,7 +49,26 @@ return function()
             server:destroy()
         end)
 
-        it("should pass deep copies of data and convert instance keys to strings", function()
+        it("should throw if tables with cyclic values are passed", function()
+            local server = Server.new()
+            local user = server:connect("user")
+            
+            local remoteEvent = server:createRemoteEvent("remoteEvent")
+
+            local data = {
+                a = 1,
+            }
+
+            data.b = data
+
+            expect(function()
+                remoteEvent:fireClient(user, data)
+            end).to.throw()
+
+            server:destroy()
+        end)
+
+        it("should pass deep copies of data and convert instance and table keys to strings", function()
             local server = Server.new()
             local user = server:connect("user")
             
@@ -57,9 +76,12 @@ return function()
 
             local part = Instance.new("Part")
 
+            local tab = {ok = 1}
+
             local data = {
                 a = {[part] = 1},
                 b = {key = 2},
+                [tab] = 3,
             }
 
             remoteEvent:fireClient(user, data, data, part)
@@ -73,9 +95,15 @@ return function()
 
             expect(data1.a[part]).to.never.be.ok()
             expect(data1.a["<Instance> (Part)"]).to.equal(1)
-
+            
             expect(data2.a[part]).to.never.be.ok()
             expect(data2.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(data1[tab]).to.never.be.ok()
+            expect(data1["<Table> ("..tostring(tab)..")"]).to.equal(3)
+
+            expect(data2[tab]).to.never.be.ok()
+            expect(data2["<Table> ("..tostring(tab)..")"]).to.equal(3)
 
             expect(passedPart).to.equal(part)
 
@@ -129,7 +157,24 @@ return function()
             server:destroy()
         end)
 
-        it("should pass deep copies of data and convert instance keys to strings", function()
+        it("should throw if tables with cyclic values are passed", function()
+            local server = Server.new()
+            local remoteEvent = server:createRemoteEvent("remoteEvent")
+
+            local data = {
+                a = 1,
+            }
+
+            data.b = data
+
+            expect(function()
+                remoteEvent:fireAllClients(data)
+            end).to.throw()
+
+            server:destroy()
+        end)
+
+        it("should pass deep copies of data and convert instance and table keys to strings", function()
             local server = Server.new()
             local user1 = server:connect("user1")
             local user2 = server:connect("user2")
@@ -138,9 +183,12 @@ return function()
 
             local part = Instance.new("Part")
 
+            local tab = {ok = 1}
+
             local data = {
                 a = {[part] = 1},
                 b = {key = 2},
+                [tab] = 3,
             }
 
             remoteEvent:fireAllClients(data, data, part)
@@ -159,6 +207,12 @@ return function()
             expect(user1Data2.a[part]).to.never.be.ok()
             expect(user1Data2.a["<Instance> (Part)"]).to.equal(1)
 
+            expect(user1Data1[tab]).to.never.be.ok()
+            expect(user1Data1["<Table> ("..tostring(tab)..")"]).to.equal(3)
+
+            expect(user1Data2[tab]).to.never.be.ok()
+            expect(user1Data2["<Table> ("..tostring(tab)..")"]).to.equal(3)
+
             expect(user1PassedPart).to.equal(part)
 
             expect(user2Data1).to.never.equal(data)
@@ -171,6 +225,12 @@ return function()
 
             expect(user2Data2.a[part]).to.never.be.ok()
             expect(user2Data2.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(user2Data1[tab]).to.never.be.ok()
+            expect(user2Data1["<Table> ("..tostring(tab)..")"]).to.equal(3)
+
+            expect(user2Data2[tab]).to.never.be.ok()
+            expect(user2Data2["<Table> ("..tostring(tab)..")"]).to.equal(3)
 
             expect(user2PassedPart).to.equal(part)
 

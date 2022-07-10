@@ -48,6 +48,7 @@ end
     @param ... any
 ]=]
 function MockRemoteEvent:fireServer(...)
+    local args = {prepArgs(...)}
     self.OnServerEvent:fire(self._client, prepArgs(...))
 end
 

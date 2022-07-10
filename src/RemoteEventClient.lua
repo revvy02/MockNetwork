@@ -43,7 +43,7 @@ end
     @private
 ]=]
 function RemoteEventClient:_fireClient(...)
-    self.OnClientEvent:fire(prepArgs(...))
+    self.OnClientEvent:fire(...)
 end
 
 --[=[
@@ -62,7 +62,7 @@ end
     @param ... any
 ]=]
 function RemoteEventClient:fireServer(...)
-    self._server:getRemoteEvent(self.name):_fireServer(self._client, ...)
+    self._server:getRemoteEvent(self.name):_fireServer(self._client, prepArgs(...))
 end
 
 --[=[

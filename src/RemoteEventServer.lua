@@ -41,7 +41,7 @@ end
     @private
 ]=]
 function RemoteEventServer:_fireServer(client, ...)
-    self.OnServerEvent:fire(client, prepArgs(...))
+    self.OnServerEvent:fire(client, ...)
 end
 
 --[=[
@@ -65,7 +65,7 @@ end
     @param ... any
 ]=]
 function RemoteEventServer:fireClient(client, ...)
-    client:getRemoteEvent(self.name):_fireClient(...)
+    client:getRemoteEvent(self.name):_fireClient(prepArgs(...))
 end
 
 --[=[
@@ -74,8 +74,10 @@ end
     @param ... any
 ]=]
 function RemoteEventServer:fireAllClients(...)
+    local args = {prepArgs(...)}
+
     for _, client in pairs(self._server._clients) do
-        self:fireClient(client, ...)
+        client:getRemoteEvent(self.name):_fireClient(table.unpack(args))
     end
 end
 

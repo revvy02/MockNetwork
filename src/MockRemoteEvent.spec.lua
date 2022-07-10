@@ -53,13 +53,32 @@ return function()
             mockRemoteEvent:destroy()
         end)
 
-        it("should pass deep copies of data and convert instance keys to strings", function()
+        it("should throw if tables with cyclic values are passed", function()
+            local mockRemoteEvent = MockRemoteEvent.new("user")
+
+            local data = {
+                a = 1,
+            }
+
+            data.b = data
+
+            expect(function()
+                mockRemoteEvent:fireServer(data)
+            end).to.throw()
+
+            mockRemoteEvent:destroy()
+        end)
+
+        it("should pass deep copies of data and convert instance and table keys to strings", function()
             local mockRemoteEvent = MockRemoteEvent.new("user")
             local part = Instance.new("Part")
+
+            local tab = {ok = 1}
 
             local data = {
                 a = {[part] = 1},
                 b = {key = 2},
+                [tab] = 3,
             }
 
             mockRemoteEvent:fireServer(data, data, part)
@@ -76,6 +95,12 @@ return function()
 
             expect(data2.a[part]).to.never.be.ok()
             expect(data2.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(data1[tab]).to.never.be.ok()
+            expect(data1["<Table> ("..tostring(tab)..")"]).to.equal(3)
+
+            expect(data2[tab]).to.never.be.ok()
+            expect(data2["<Table> ("..tostring(tab)..")"]).to.equal(3)
 
             expect(passedPart).to.equal(part)
 
@@ -125,13 +150,32 @@ return function()
             mockRemoteEvent:destroy()
         end)
 
-        it("should pass deep copies of data and convert instance keys to strings", function()
+        it("should throw if tables with cyclic values are passed", function()
+            local mockRemoteEvent = MockRemoteEvent.new("user")
+
+            local data = {
+                a = 1,
+            }
+
+            data.b = data
+
+            expect(function()
+                mockRemoteEvent:fireClient("user", data)
+            end).to.throw()
+
+            mockRemoteEvent:destroy()
+        end)
+
+        it("should pass deep copies of data and convert instance and table keys to strings", function()
             local mockRemoteEvent = MockRemoteEvent.new("user")
             local part = Instance.new("Part")
+
+            local tab = {ok = 1}
 
             local data = {
                 a = {[part] = 1},
                 b = {key = 2},
+                [tab] = 3,
             }
 
             mockRemoteEvent:fireClient("user", data, data, part)
@@ -142,12 +186,18 @@ return function()
             expect(data2).to.never.equal(data)
 
             expect(data1).to.never.equal(data2)
-
+            
             expect(data1.a[part]).to.never.be.ok()
             expect(data1.a["<Instance> (Part)"]).to.equal(1)
-
+            
             expect(data2.a[part]).to.never.be.ok()
             expect(data2.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(data1[tab]).to.never.be.ok()
+            expect(data1["<Table> ("..tostring(tab)..")"]).to.equal(3)
+
+            expect(data2[tab]).to.never.be.ok()
+            expect(data2["<Table> ("..tostring(tab)..")"]).to.equal(3)
 
             expect(passedPart).to.equal(part)
 
@@ -187,13 +237,32 @@ return function()
             mockRemoteEvent:destroy()
         end)
 
-        it("should pass deep copies of data and convert instance keys to strings", function()
+        it("should throw if tables with cyclic values are passed", function()
+            local mockRemoteEvent = MockRemoteEvent.new("user")
+
+            local data = {
+                a = 1,
+            }
+
+            data.b = data
+
+            expect(function()
+                mockRemoteEvent:fireAllClients(data)
+            end).to.throw()
+
+            mockRemoteEvent:destroy()
+        end)
+
+        it("should pass deep copies of data and convert instance and table keys to strings", function()
             local mockRemoteEvent = MockRemoteEvent.new("user")
             local part = Instance.new("Part")
+
+            local tab = {ok = 1}
 
             local data = {
                 a = {[part] = 1},
                 b = {key = 2},
+                [tab] = 3,
             }
 
             mockRemoteEvent:fireAllClients(data, data, part)
@@ -204,12 +273,18 @@ return function()
             expect(data2).to.never.equal(data)
 
             expect(data1).to.never.equal(data2)
-
+            
             expect(data1.a[part]).to.never.be.ok()
             expect(data1.a["<Instance> (Part)"]).to.equal(1)
-
+            
             expect(data2.a[part]).to.never.be.ok()
             expect(data2.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(data1[tab]).to.never.be.ok()
+            expect(data1["<Table> ("..tostring(tab)..")"]).to.equal(3)
+
+            expect(data2[tab]).to.never.be.ok()
+            expect(data2["<Table> ("..tostring(tab)..")"]).to.equal(3)
 
             expect(passedPart).to.equal(part)
 

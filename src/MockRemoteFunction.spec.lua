@@ -94,17 +94,36 @@ return function()
             mockRemoteFunction:destroy()
         end)
 
-        it("should pass deep copies of data and convert instance keys to strings", function()
+        it("should throw if tables with cyclic values are passed", function()
+            local mockRemoteFunction = MockRemoteFunction.new("user")
+
+            local data = {
+                a = 1,
+            }
+
+            data.b = data
+
+            expect(function()
+                mockRemoteFunction:invokeServer(data)
+            end).to.throw()
+
+            mockRemoteFunction:destroy()
+        end)
+
+        it("should pass deep copies of data and convert instance and table keys to strings", function()
             local mockRemoteFunction = MockRemoteFunction.new("user")
             local part = Instance.new("Part")
+
+            local tab = {ok = 1}
 
             local data = {
                 a = {[part] = 1},
                 b = {key = 2},
+                [tab] = 3,
             }
 
             task.spawn(function()
-                mockRemoteFunction:invokeServer( data, data, part)
+                mockRemoteFunction:invokeServer(data, data, part)
             end)
 
             local data1, data2, passedPart
@@ -123,6 +142,12 @@ return function()
 
             expect(data2.a[part]).to.never.be.ok()
             expect(data2.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(data1[tab]).to.never.be.ok()
+            expect(data1["<Table> ("..tostring(tab)..")"]).to.equal(3)
+
+            expect(data2[tab]).to.never.be.ok()
+            expect(data2["<Table> ("..tostring(tab)..")"]).to.equal(3)
 
             expect(passedPart).to.equal(part)
 
@@ -178,13 +203,32 @@ return function()
             mockRemoteFunction:destroy()
         end)
 
-        it("should pass deep copies of data and convert instance keys to strings", function()
+        it("should throw if tables with cyclic values are passed", function()
+            local mockRemoteFunction = MockRemoteFunction.new("user")
+
+            local data = {
+                a = 1,
+            }
+
+            data.b = data
+
+            expect(function()
+                mockRemoteFunction:invokeClient("user", data)
+            end).to.throw()
+
+            mockRemoteFunction:destroy()
+        end)
+
+        it("should pass deep copies of data and convert instance and table keys to strings", function()
             local mockRemoteFunction = MockRemoteFunction.new("user")
             local part = Instance.new("Part")
+
+            local tab = {ok = 1}
 
             local data = {
                 a = {[part] = 1},
                 b = {key = 2},
+                [tab] = 3,
             }
 
             task.spawn(function()
@@ -207,6 +251,12 @@ return function()
 
             expect(data2.a[part]).to.never.be.ok()
             expect(data2.a["<Instance> (Part)"]).to.equal(1)
+
+            expect(data1[tab]).to.never.be.ok()
+            expect(data1["<Table> ("..tostring(tab)..")"]).to.equal(3)
+
+            expect(data2[tab]).to.never.be.ok()
+            expect(data2["<Table> ("..tostring(tab)..")"]).to.equal(3)
 
             expect(passedPart).to.equal(part)
 

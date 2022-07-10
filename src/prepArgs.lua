@@ -1,3 +1,21 @@
+local function isCyclic(tab, checked)
+    if checked == nil then
+        checked = {}
+    end
+
+    checked[tab] = true
+
+    for _, value in tab do
+        if typeof(value) == "table" then
+            if isCyclic(value, checked) then
+                return true
+            end
+        end
+    end
+
+    return false
+end
+
 local function deepCopy(tab)
     local new = {}
 
@@ -8,6 +26,8 @@ local function deepCopy(tab)
 
         if typeof(k) == "Instance" then
             k = string.format("<Instance> (%s)", k.Name)
+        elseif typeof(k) == "table" then
+            k = string.format("<Table> (%s)", tostring(k))
         end
 
         new[k] = v
@@ -21,6 +41,7 @@ local function prepArgs(...)
 
     for i, arg in {...} do
         if type(arg) == "table" then
+            assert(not isCyclic(arg), "tables cannot be cyclic")
             new[i] = deepCopy(arg)
         else
             new[i] = arg

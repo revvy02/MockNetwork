@@ -62,7 +62,7 @@ end
 ]=]
 function RemoteFunctionServer:_invokeServer(client, ...)
     if self._internal.OnServerInvoke then
-        return self._internal.OnServerInvoke(client, prepArgs(...))
+        return self._internal.OnServerInvoke(client, ...)
     end
     
     local signal = TrueSignal.new()
@@ -100,7 +100,7 @@ end
     @yields
 ]=]
 function RemoteFunctionServer:invokeClient(client, ...)
-    return client:getRemoteFunction(self.name):_invokeClient(...)
+    return client:getRemoteFunction(self.name):_invokeClient(prepArgs(...))
 end
 
 --[=[
