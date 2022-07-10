@@ -37,14 +37,12 @@ local function deepCopy(tab)
 end
 
 local function prepArgs(...)
-    local new = {}
+    local new = {...}
 
     for i, arg in {...} do
         if type(arg) == "table" then
             assert(not isCyclic(arg), "tables cannot be cyclic")
             new[i] = deepCopy(arg)
-        else
-            new[i] = arg
         end
     end
 
