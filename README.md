@@ -20,7 +20,13 @@ MockNetwork serves to replicate specific behavior of Roblox's RemoteEvent and Re
 Firing a remote will queue the request on the receiving side until a handler is set or a connection is made
 
 *Mutates Instance Keys in Tables*\
-Passing a table that has an instances as keys will result in the keys being converted to strings
+Passing a table that has instances as keys will result in the keys being converted to strings
+
+*Mutates Table Keys in Tables*\
+Passing a table that has tables as keys will result in the table being converted to a string with its memory address
+
+*Erroring with Cyclic Table Values*\
+Passing a table that has cyclic references as values will result in an error, preventing the data being sent to the server or client
 
 ## Examples
 *Using the Server class*\
