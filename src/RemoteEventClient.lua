@@ -62,7 +62,11 @@ end
     @param ... any
 ]=]
 function RemoteEventClient:fireServer(...)
-    self._server:getRemoteEvent(self.name):_fireServer(self._client, prepArgs(...))
+    local args = {prepArgs(...)}
+
+    if self._server._remoteEvents[self.name] then
+        self._server:getRemoteEvent(self.name):_fireServer(self._client, table.unpack(args))
+    end
 end
 
 --[=[

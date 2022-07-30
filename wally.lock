@@ -9,7 +9,7 @@ dependencies = []
 
 [[package]]
 name = "revvy02/mocknetwork"
-version = "1.0.5"
+version = "1.4.3"
 dependencies = [["TestEZ", "roblox/testez@0.4.1"], ["TrueSignal", "revvy02/truesignal@1.0.2"]]
 
 [[package]]

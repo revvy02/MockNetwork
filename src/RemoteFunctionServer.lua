@@ -100,7 +100,11 @@ end
     @yields
 ]=]
 function RemoteFunctionServer:invokeClient(client, ...)
-    return client:getRemoteFunction(self.name):_invokeClient(prepArgs(...))
+    local args = {prepArgs(...)}
+
+    if client._remoteFunctions[self.name] then
+        return client:getRemoteFunction(self.name):_invokeClient(table.unpack(args))
+    end
 end
 
 --[=[

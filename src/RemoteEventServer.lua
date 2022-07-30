@@ -65,7 +65,11 @@ end
     @param ... any
 ]=]
 function RemoteEventServer:fireClient(client, ...)
-    client:getRemoteEvent(self.name):_fireClient(prepArgs(...))
+    local args = {prepArgs(...)}
+
+    if client._remoteEvents[self.name] then
+        client:getRemoteEvent(self.name):_fireClient(table.unpack(args))
+    end
 end
 
 --[=[
@@ -77,7 +81,9 @@ function RemoteEventServer:fireAllClients(...)
     local args = {prepArgs(...)}
 
     for _, client in pairs(self._server._clients) do
-        client:getRemoteEvent(self.name):_fireClient(table.unpack(args))
+        if client._remoteEvents[self.name] then
+            client:getRemoteEvent(self.name):_fireClient(table.unpack(args))
+        end
     end
 end
 

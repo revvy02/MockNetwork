@@ -97,7 +97,11 @@ end
     @return any
 ]=]
 function RemoteFunctionClient:invokeServer(...)
-    return self._server:getRemoteFunction(self.name):_invokeServer(self._client, prepArgs(...))
+    local args = {prepArgs(...)}
+
+    if self._server._remoteFunctions[self.name] then
+        return self._server:getRemoteFunction(self.name):_invokeServer(self._client, table.unpack(args))
+    end
 end
 
 --[=[
